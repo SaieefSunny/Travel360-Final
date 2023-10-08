@@ -1,0 +1,1448 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block base %}
+{% block header %}Search Flights{% endblock %}
+
+<div class="row  mt-4 ">
+    <div class="col-12">
+        <div class="card ms-5 mt-5">
+            <div class="card-body">
+                <div class="search_form_area">
+
+                    <div class="tab-content  nav-tab" id="myTabContent">
+                        <div class="tab-pane fade show  active" id="flights" role="tabpanel"
+                            aria-labelledby="flights-tab">
+
+                            <ul class="nav nav-pills mb-3 ms-5" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                                        href="#pills-oneway" role="tab" aria-controls="pills-oneway"
+                                        aria-selected="true">One way</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                        href="#pills-roundtrip" role="tab" aria-controls="pills-roundtrip"
+                                        aria-selected="false">Roundtrip</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
+                                        href="#pills-multicity" role="tab" aria-controls="pills-multicity"
+                                        aria-selected="false">Multi City</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content p-4" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-oneway" role="tabpanel"
+                                    aria-labelledby="pills-oneway-tab">
+                                    <div class="tab-pane fade show active" id="oneway_flight" role="tabpanel"
+                                        aria-labelledby="oneway-tab">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-xl-12">
+                                                <div class="oneway_search_form">
+                                                    <form method="POST">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+
+                                                                <div class="flight_Search_boxed">
+                                                                    <p>From</p>
+                                                                    <input type="text" value="" id="userLocationFrom"
+                                                                        placeholder="Location" name="from_location">
+                                                                    <div id="airportDropdownFrom"
+                                                                        class="dropdown-from-content"></div>
+                                                                    <input type="hidden" id="iataFrom" name="iataFrom">
+                                                                    <span id="airportNameFrom">Name of the
+                                                                        Airport</span>
+                                                                    <div class="plan_icon_posation">
+                                                                        <i class="fas fa-plane-departure"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                                                <div class="flight_Search_boxed">
+                                                                    <p>To</p>
+                                                                    <input type="text" value="" id="userLocationTo"
+                                                                        placeholder="Destination" name="to_location">
+                                                                    <div id="airportDropdownTo"
+                                                                        class="dropdown-to-content"></div>
+                                                                    <input type="hidden" id="iataTo" name="iataTo">
+                                                                    <span id="airportNameTo">Name of the Airport</span>
+                                                                    <div class="plan_icon_posation">
+                                                                        <i class="fas fa-plane-arrival"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4  col-md-6 col-sm-12 col-12">
+                                                                <div class="form_search_date">
+                                                                    <div class="flight_Search_boxed date_flex_area">
+                                                                        <div class="Journey_date">
+                                                                            <p>Journey date</p>
+                                                                            <input type="date" value="2022-05-05"
+                                                                                name="journey_date" id="journeyDate">
+                                                                            <span id="journeyDay">Journey Day</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2  col-md-6 col-sm-12 col-12">
+                                                                <div
+                                                                    class="flight_Search_boxed dropdown_passenger_area">
+                                                                    <p>Passenger, Class </p>
+                                                                    <div class="dropdown">
+                                                                        <button class="dropdown-toggle final-count"
+                                                                            data-toggle="dropdown" type="button"
+                                                                            id="dropdownMenuButton1"
+                                                                            data-bs-toggle="dropdown" name="total_passenger"
+                                                                            aria-expanded="false">
+                                                                            1 Passenger
+                                                                        </button>
+                                                                        <div class="dropdown-menu dropdown_passenger_info"
+                                                                            aria-labelledby="dropdownMenuButton1">
+                                                                            <div class="traveller-calulate-persons">
+                                                                                <div class="passengers">
+                                                                                    <h6>Passengers</h6>
+                                                                                    <div class="passengers-types">
+                                                                                        <div class="passengers-type">
+                                                                                            <div class="text">
+                                                                                                <input
+                                                                                                    class="count pcount" name="adult" value="1">
+                                                                                                <div class="type-label">
+                                                                                                    <p>Adult
+                                                                                                    </p>
+                                                                                                    <span>12+
+                                                                                                        yrs</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="button-set">
+                                                                                                <button type="button"
+                                                                                                    class="btn-add">
+                                                                                                    <i
+                                                                                                        class="fas fa-plus"></i>
+                                                                                                </button>
+                                                                                                <button type="button"
+                                                                                                    class="btn-subtract">
+                                                                                                    <i
+                                                                                                        class="fas fa-minus"></i>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="passengers-type">
+                                                                                            <div class="text">
+                                                                                                <input
+                                                                                                    class="count ccount" name="child" value="0">
+                                                                                                <div class="type-label">
+                                                                                                    <p
+                                                                                                        class="fz14 mb-xs-0">
+                                                                                                        Children
+                                                                                                    </p>
+                                                                                                    <span>2
+                                                                                                        -
+                                                                                                        Less
+                                                                                                        than
+                                                                                                        12
+                                                                                                        yrs</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="button-set">
+                                                                                                <button type="button"
+                                                                                                    class="btn-add-c">
+                                                                                                    <i
+                                                                                                        class="fas fa-plus"></i>
+                                                                                                </button>
+                                                                                                <button type="button"
+                                                                                                    class="btn-subtract-c">
+                                                                                                    <i
+                                                                                                        class="fas fa-minus"></i>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="passengers-type">
+                                                                                            <div class="text">
+                                                                                                <input
+                                                                                                    class="count incount" name="infant" value="0">
+                                                                                                <div class="type-label">
+                                                                                                    <p
+                                                                                                        class="fz14 mb-xs-0">
+                                                                                                        Infant
+                                                                                                    </p>
+                                                                                                    <span>Less
+                                                                                                        than
+                                                                                                        2
+                                                                                                        yrs</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="button-set">
+                                                                                                <button type="button"
+                                                                                                    class="btn-add-in">
+                                                                                                    <i
+                                                                                                        class="fas fa-plus"></i>
+                                                                                                </button>
+                                                                                                <button type="button"
+                                                                                                    class="btn-subtract-in">
+                                                                                                    <i
+                                                                                                        class="fas fa-minus"></i>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="cabin-selection">
+                                                                                    <h6>Cabin Class</h6>
+                                                                                    <div class="cabin-list">
+                                                                                        <button type="button"
+                                                                                            class="label-select-btn"
+                                                                                            onclick="selectCabin(this)">
+                                                                                            <span
+                                                                                                class="muiButton-label">Economy</span>
+                                                                                        </button>
+                                                                                        <button type="button"
+                                                                                            class="label-select-btn active"
+                                                                                            onclick="selectCabin(this)">
+                                                                                            <span
+                                                                                                class="muiButton-label">Business</span>
+                                                                                        </button>
+                                                                                        <button type="button"
+                                                                                            class="label-select-btn"
+                                                                                            onclick="selectCabin(this)">
+                                                                                            <span
+                                                                                                class="muiButton-label">First
+                                                                                                Class</span>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <input class="m-0 p-0" id="selected-cabin" name="select_cabin" value="Economy" style="font-size: 12px;">
+                                                                </div>
+                                                            </div>
+                                                            <div class="top_form_search_button">
+                                                                <button class="btn  btn-outline-primary  mt-2 "
+                                                                    type="submit">Search</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade show" id="pills-roundtrip" role="tabpanel"
+                                    aria-labelledby="pills-roundtrip-tab">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-xl-12">
+                                            <div class="oneway_search_form">
+                                                <form action="#!">
+                                                    <div class="row">
+                                                        <div class="col-lg-3  col-md-6 col-sm-12 col-12 ">
+                                                            <div class="flight_Search_boxed">
+                                                                <p>From</p>
+                                                                <input type="text" value="New York">
+                                                                <span>JFK - John F. Kennedy
+                                                                    International...</span>
+                                                                <div class="plan_icon_posation ">
+                                                                    <i class="fas fa-plane-departure "></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3  col-md-6 col-sm-12 col-12 ">
+                                                            <div class="flight_Search_boxed">
+                                                                <p>To</p>
+                                                                <input type="text" value="London ">
+                                                                <span>LCY, London city airport </span>
+                                                                <div class="plan_icon_posation">
+                                                                    <i class="fas fa-plane-arrival"></i>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4  col-md-6 col-sm-12 col-12">
+                                                            <div class="form_search_date">
+                                                                <div class="flight_Search_boxed date_flex_area">
+                                                                    <div class="Journey_date">
+                                                                        <p>Journey date</p>
+                                                                        <input type="date" value="2022-05-05">
+                                                                        <span>Thursday</span>
+                                                                    </div>
+                                                                    <div class="Journey_date">
+                                                                        <p>Return date</p>
+                                                                        <input type="date" value="2022-05-08">
+                                                                        <span>Saturday</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-2  col-md-6 col-sm-12 col-12">
+                                                            <div class="flight_Search_boxed dropdown_passenger_area">
+                                                                <p>Passenger, Class </p>
+                                                                <div class="dropdown">
+                                                                    <button class="dropdown-toggle final-count"
+                                                                        data-toggle="dropdown" type="button"
+                                                                        id="dropdownMenuButton1"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        0 Passenger
+                                                                    </button>
+                                                                    <div class="dropdown-menu dropdown_passenger_info"
+                                                                        aria-labelledby="dropdownMenuButton1">
+                                                                        <div class="traveller-calulate-persons">
+                                                                            <div class="passengers">
+                                                                                <h6>Passengers</h6>
+                                                                                <div class="passengers-types">
+                                                                                    <div class="passengers-type">
+                                                                                        <div class="text">
+                                                                                            <span
+                                                                                                class="count pcount">0</span>
+                                                                                            <div class="type-label">
+                                                                                                <p>Adult
+                                                                                                </p>
+                                                                                                <span>12+
+                                                                                                    yrs</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="button-set">
+                                                                                            <button type="button"
+                                                                                                class="btn-add">
+                                                                                                <i
+                                                                                                    class="fas fa-plus"></i>
+                                                                                            </button>
+                                                                                            <button type="button"
+                                                                                                class="btn-subtract">
+                                                                                                <i
+                                                                                                    class="fas fa-minus"></i>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="passengers-type">
+                                                                                        <div class="text">
+                                                                                            <span
+                                                                                                class="count ccount">0</span>
+                                                                                            <div class="type-label">
+                                                                                                <p class="fz14 mb-xs-0">
+                                                                                                    Children
+                                                                                                </p>
+                                                                                                <span>2
+                                                                                                    -
+                                                                                                    Less
+                                                                                                    than
+                                                                                                    12
+                                                                                                    yrs</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="button-set">
+                                                                                            <button type="button"
+                                                                                                class="btn-add-c">
+                                                                                                <i
+                                                                                                    class="fas fa-plus"></i>
+                                                                                            </button>
+                                                                                            <button type="button"
+                                                                                                class="btn-subtract-c">
+                                                                                                <i
+                                                                                                    class="fas fa-minus"></i>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="passengers-type">
+                                                                                        <div class="text">
+                                                                                            <span
+                                                                                                class="count incount">0</span>
+                                                                                            <div class="type-label">
+                                                                                                <p class="fz14 mb-xs-0">
+                                                                                                    Infant
+                                                                                                </p>
+                                                                                                <span>Less
+                                                                                                    than
+                                                                                                    2
+                                                                                                    yrs</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="button-set">
+                                                                                            <button type="button"
+                                                                                                class="btn-add-in">
+                                                                                                <i
+                                                                                                    class="fas fa-plus"></i>
+                                                                                            </button>
+                                                                                            <button type="button"
+                                                                                                class="btn-subtract-in">
+                                                                                                <i
+                                                                                                    class="fas fa-minus"></i>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="cabin-selection">
+                                                                                <h6>Cabin Class</h6>
+                                                                                <div class="cabin-list">
+                                                                                    <button type="button"
+                                                                                        class="label-select-btn"
+                                                                                        onclick="selectCabin(this)">
+                                                                                        <span
+                                                                                            class="muiButton-label">Economy</span>
+                                                                                    </button>
+                                                                                    <button type="button"
+                                                                                        class="label-select-btn active"
+                                                                                        onclick="selectCabin(this)">
+                                                                                        <span
+                                                                                            class="muiButton-label">Business</span>
+                                                                                    </button>
+                                                                                    <button type="button"
+                                                                                        class="label-select-btn"
+                                                                                        onclick="selectCabin(this)">
+                                                                                        <span
+                                                                                            class="muiButton-label">First
+                                                                                            Class</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <span>Business</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="top_form_search_button">
+                                                        <button class="btn  btn-outline-primary  mt-2">Search</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-multicity" role="tabpanel"
+                                    aria-labelledby="pills-multicity-tab">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-xl-12">
+                                            <div class="oneway_search_form">
+                                                <form action="#!">
+                                                    <div class="multi_city_form_wrapper">
+                                                        <div class="multi_city_form">
+                                                            <div class="row">
+                                                                <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                                                    <div class="flight_Search_boxed">
+                                                                        <p>From</p>
+                                                                        <input type="text" value="New York">
+                                                                        <span>DAC, Hazrat Shahajalal
+                                                                            International...</span>
+                                                                        <div class="plan_icon_posation">
+                                                                            <i class="fas fa-plane-departure"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                                                    <div class="flight_Search_boxed">
+                                                                        <p>To</p>
+                                                                        <input type="text" value="London ">
+                                                                        <span>LCY, London city airport
+                                                                        </span>
+                                                                        <div class="plan_icon_posation">
+                                                                            <i class="fas fa-plane-arrival"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                                                                    <div class="form_search_date">
+                                                                        <div class="flight_Search_boxed date_flex_area">
+                                                                            <div class="Journey_date">
+                                                                                <p>Journey date</p>
+                                                                                <input type="date" value="2022-05-05">
+                                                                                <span>Thursday</span>
+                                                                            </div>
+                                                                            <div class="Journey_date">
+                                                                                <p>Return date</p>
+                                                                                <input type="date" value="2022-05-10">
+                                                                                <span>Saturday</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2  col-md-6 col-sm-12 col-12">
+                                                                    <div
+                                                                        class="flight_Search_boxed dropdown_passenger_area">
+                                                                        <p>Passenger, Class </p>
+                                                                        <div class="dropdown">
+                                                                            <button class="dropdown-toggle final-count"
+                                                                                data-toggle="dropdown" type="button"
+                                                                                id="dropdownMenuButton1"
+                                                                                data-bs-toggle="dropdown"
+                                                                                aria-expanded="false">
+                                                                                0 Passenger
+                                                                            </button>
+                                                                            <div class="dropdown-menu dropdown_passenger_info"
+                                                                                aria-labelledby="dropdownMenuButton1">
+                                                                                <div class="traveller-calulate-persons">
+                                                                                    <div class="passengers">
+                                                                                        <h6>Passengers
+                                                                                        </h6>
+                                                                                        <div class="passengers-types">
+                                                                                            <div
+                                                                                                class="passengers-type">
+                                                                                                <div class="text">
+                                                                                                    <span
+                                                                                                        class="count pcount"
+                                                                                                        id="f-qadult">0</span>
+                                                                                                    <div
+                                                                                                        class="type-label">
+                                                                                                        <p>Adult
+                                                                                                        </p>
+                                                                                                        <span>12+
+                                                                                                            yrs</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="button-set">
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-add">
+                                                                                                        <i
+                                                                                                            class="fas fa-plus"></i>
+                                                                                                    </button>
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-subtract">
+                                                                                                        <i
+                                                                                                            class="fas fa-minus"></i>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="passengers-type">
+                                                                                                <div class="text">
+                                                                                                    <span
+                                                                                                        class="count ccount"
+                                                                                                        id="f-qchild">0</span>
+                                                                                                    <div
+                                                                                                        class="type-label">
+                                                                                                        <p
+                                                                                                            class="fz14 mb-xs-0">
+                                                                                                            Children
+                                                                                                        </p>
+                                                                                                        <span>2
+                                                                                                            -
+                                                                                                            Less
+                                                                                                            than
+                                                                                                            12
+                                                                                                            yrs</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="button-set">
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-add-c">
+                                                                                                        <i
+                                                                                                            class="fas fa-plus"></i>
+                                                                                                    </button>
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-subtract-c">
+                                                                                                        <i
+                                                                                                            class="fas fa-minus"></i>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="passengers-type">
+                                                                                                <div class="text">
+                                                                                                    <span
+                                                                                                        class="count incount"
+                                                                                                        id="f-qinfant">0</span>
+                                                                                                    <div
+                                                                                                        class="type-label">
+                                                                                                        <p
+                                                                                                            class="fz14 mb-xs-0">
+                                                                                                            Infant
+                                                                                                        </p>
+                                                                                                        <span>Less
+                                                                                                            than
+                                                                                                            2
+                                                                                                            yrs</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="button-set">
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-add-in">
+                                                                                                        <i
+                                                                                                            class="fas fa-plus"></i>
+                                                                                                    </button>
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-subtract-in">
+                                                                                                        <i
+                                                                                                            class="fas fa-minus"></i>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="cabin-selection">
+                                                                                        <h6>Cabin Class
+                                                                                        </h6>
+                                                                                        <div class="cabin-list">
+                                                                                            <button type="button"
+                                                                                                class="label-select-btn"
+                                                                                                onclick="selectCabin(this)">
+                                                                                                <span
+                                                                                                    class="muiButton-label">Economy</span>
+                                                                                            </button>
+                                                                                            <button type="button"
+                                                                                                class="label-select-btn active"
+                                                                                                onclick="selectCabin(this)">
+                                                                                                <span
+                                                                                                    class="muiButton-label">Business</span>
+                                                                                            </button>
+                                                                                            <button type="button"
+                                                                                                class="label-select-btn"
+                                                                                                onclick="selectCabin(this)">
+                                                                                                <span
+                                                                                                    class="muiButton-label">First
+                                                                                                    Class</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span>Business</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="multi_city_form">
+                                                            <div class="row">
+                                                                <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                                                    <div class="flight_Search_boxed">
+                                                                        <p>From</p>
+                                                                        <input type="text" value="New York">
+                                                                        <span>DAC, Hazrat Shahajalal
+                                                                            International...</span>
+                                                                        <div class="plan_icon_posation">
+                                                                            <i class="fas fa-plane-departure"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                                                    <div class="flight_Search_boxed">
+                                                                        <p>To</p>
+                                                                        <input type="text" value="London ">
+                                                                        <span>LCY, London city airport
+                                                                        </span>
+                                                                        <div class="plan_icon_posation">
+                                                                            <i class="fas fa-plane-arrival"></i>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                                                                    <div class="form_search_date">
+                                                                        <div class="flight_Search_boxed date_flex_area">
+                                                                            <div class="Journey_date">
+                                                                                <p>Journey date</p>
+                                                                                <input type="date" value="2022-05-05">
+                                                                                <span>Thursday</span>
+                                                                            </div>
+                                                                            <div class="Journey_date">
+                                                                                <p>Return date</p>
+                                                                                <input type="date" value="2022-05-12">
+                                                                                <span>Saturday</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2  col-md-6 col-sm-12 col-12">
+                                                                    <div
+                                                                        class="flight_Search_boxed dropdown_passenger_area">
+                                                                        <p>Passenger, Class </p>
+                                                                        <div class="dropdown">
+                                                                            <button class="dropdown-toggle final-count"
+                                                                                data-toggle="dropdown" type="button"
+                                                                                id="dropdownMenuButton1"
+                                                                                data-bs-toggle="dropdown"
+                                                                                aria-expanded="false">
+                                                                                0 Passenger
+                                                                            </button>
+                                                                            <div class="dropdown-menu dropdown_passenger_info"
+                                                                                aria-labelledby="dropdownMenuButton1">
+                                                                                <div class="traveller-calulate-persons">
+                                                                                    <div class="passengers">
+                                                                                        <h6>Passengers
+                                                                                        </h6>
+                                                                                        <div class="passengers-types">
+                                                                                            <div
+                                                                                                class="passengers-type">
+                                                                                                <div class="text">
+                                                                                                    <span
+                                                                                                        class="count pcount">0</span>
+                                                                                                    <div
+                                                                                                        class="type-label">
+                                                                                                        <p>Adult
+                                                                                                        </p>
+                                                                                                        <span>12+
+                                                                                                            yrs</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="button-set ">
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-add ">
+                                                                                                        <i
+                                                                                                            class="fas fa-plus "></i>
+                                                                                                    </button>
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-subtract">
+                                                                                                        <i
+                                                                                                            class="fas fa-minus"></i>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="passengers-type">
+                                                                                                <div class="text">
+                                                                                                    <span
+                                                                                                        class="count ccount">0</span>
+                                                                                                    <div
+                                                                                                        class="type-label">
+                                                                                                        <p
+                                                                                                            class="fz14 mb-xs-0">
+                                                                                                            Children
+                                                                                                        </p>
+                                                                                                        <span>2
+                                                                                                            -
+                                                                                                            Less
+                                                                                                            than
+                                                                                                            12
+                                                                                                            yrs</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="button-set">
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-add-c">
+                                                                                                        <i
+                                                                                                            class="fas fa-plus"></i>
+                                                                                                    </button>
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-subtract-c">
+                                                                                                        <i
+                                                                                                            class="fas fa-minus"></i>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="passengers-type">
+                                                                                                <div class="text">
+                                                                                                    <span
+                                                                                                        class="count incount">0</span>
+                                                                                                    <div
+                                                                                                        class="type-label">
+                                                                                                        <p
+                                                                                                            class="fz14 mb-xs-0">
+                                                                                                            Infant
+                                                                                                        </p>
+                                                                                                        <span>Less
+                                                                                                            than
+                                                                                                            2
+                                                                                                            yrs</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="button-set">
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-add-in">
+                                                                                                        <i
+                                                                                                            class="fas fa-plus"></i>
+                                                                                                    </button>
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn-subtract-in">
+                                                                                                        <i
+                                                                                                            class="fas fa-minus"></i>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="cabin-selection">
+                                                                                        <h6>Cabin Class
+                                                                                        </h6>
+                                                                                        <div class="cabin-list">
+                                                                                            <button type="button"
+                                                                                                class="label-select-btn"
+                                                                                                onclick="selectCabin(this)">
+                                                                                                <span
+                                                                                                    class="muiButton-label">Economy</span>
+                                                                                            </button>
+                                                                                            <button type="button"
+                                                                                                class="label-select-btn active"
+                                                                                                onclick="selectCabin(this)">
+                                                                                                <span
+                                                                                                    class="muiButton-label">Business</span>
+                                                                                            </button>
+                                                                                            <button type="button"
+                                                                                                class="label-select-btn"
+                                                                                                onclick="selectCabin(this)">
+                                                                                                <span
+                                                                                                    class="muiButton-label">First
+                                                                                                    Class</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span>Business</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-xl-12">
+                                                            <div class="add_multy_form">
+                                                                <button type="button" id="addMulticityRow">+ Add
+                                                                    Another
+                                                                    Flight</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="top_form_search_button">
+                                                        <button class="btn   btn-outline-primary  mt-2">Search</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Flight Section -->
+{% if itineraries %}
+<div class="row mt-4">
+    <!--Accordion start -->
+    <div class="col-3 col-sm-3 col-md-34">
+        <div class="ms-5 mt-5">
+            <div class="card">
+                <div class="navbar-expand-xl navbar-expand-xl-collapse-block">
+                    <button class="btn d-xl-none mb-5 p-0 collapsed" type="button" data-toggle="collapse"
+                        data-target="#sidebar" aria-controls="sidebar" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <i class="far fa-caret-square-down text-primary font-size-20 card-btn-arrow ml-0"></i>
+                        <span class="text-primary ml-2">Sidebar</span>
+                    </button>
+
+                    <div id="sidebar" class="collapse navbar-collapse">
+                        <div class="w-100">
+                            <div class="sidenav border border-color-8 rounded-xs">
+                                <!-- Accordiaon -->
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" style="padding:0;margin:0;">
+                                            <button class="accordion-button border-0" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                aria-expanded="true" aria-controls="collapseOne">
+                                                <span
+                                                    class="d-block font-size-lg-15 font-size-17 font-weight-bold text-dark border-0">No.
+                                                    of
+                                                    Stops</span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show"
+                                            data-bs-parent="#accordionStops">
+                                            <div class="accordion-body">
+                                                <!-- Checkboxes -->
+                                                <form id="filterForm">
+                                                    <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                id="non-Stop" name="stops" value="0">
+                                                            <label class="custom-control-label"
+                                                                for="non-Stop">Non-Stop</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                id="one-Stop" name="stops" value="1">
+                                                            <label class="custom-control-label" for="2">1
+                                                                Stop</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                id="two-Stop" name="stops" value="2">
+                                                            <label class="custom-control-label" for="3">2
+                                                                Stop</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group font-size-1 text-lh-md text-gray-1 mb-1">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                id="threeStop" name="stops" value="3">
+                                                            <label class="custom-control-label" for="4">3
+                                                                Stop</label>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                                <!-- End Checkboxes -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                aria-expanded="false" aria-controls="collapseTwo">
+                                                <span
+                                                    class="d-block font-size-lg-15 font-size-17 font-weight-bold text-dark">Price
+                                                    Range($)</span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse show"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="range mt-4">
+                                                    <div class="range-slider">
+                                                        <span class="range-selected"></span>
+                                                    </div>
+                                                    <div class="range-input">
+                                                        <input type="range" class="min" min="0" max="1000" value="0"
+                                                            step="50">
+                                                        <input type="range" class="max" min="0" max="1000" value="1000"
+                                                            step="50">
+                                                    </div>
+                                                    <div class="range-price d-flex justify-content-between">
+                                                        <span>$ <input type="number" name="min" value="300"
+                                                                class="border-0 ms-0"></span>
+                                                        <span>$ <input type="number" name="max" value="1000"
+                                                                class="border-0 ms-0"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                                aria-expanded="false" aria-controls="collapseThree">
+                                                <span
+                                                    class="font-weight-bold font-size-17 text-dark mb-3">Airlines</span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse show"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                {% for airline, frequency in airline_frequencies.items() %}
+                                                <div
+                                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox"
+                                                            class="custom-control-input airline-checkbox"
+                                                            id="{{ airline }}">
+                                                        <label class="custom-control-label" for="{{ airline }}">{{
+                                                            get_airline_name(airline) }}</label>
+                                                    </div>
+                                                    <small>{{ frequency }}</small>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                                aria-expanded="false" aria-controls="collapseFour">
+                                                <span class="font-weight-bold font-size-17 text-dark mb-3">Flight
+                                                    Type</span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFour" class="accordion-collapse collapse show"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                {% for cabin_code, frequency in cabin_code_frequencies.items() %}
+                                                <div
+                                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="brandhotel">
+                                                        <label class="custom-control-label"
+                                                            for="brandhotel">{{ get_cabin_name(cabin_code) }}</label>
+                                                    </div>
+                                                    <small>{{ frequency }}</small>
+                                                </div>
+                                                {% endfor %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Accordion -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Accordion End-->
+
+    <!-- Price Range Carousel Start-->
+    <div class="col-9 col-sm-9">
+        <div class=" mt-1">
+            <div class="">
+                <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center mb-4 ">
+                    <h3 class="font-size-21 font-weight-bold mb-4 mb-md-0 text-lh-1 text-center text-md-left">
+                    </h3>
+                    <div class="d-flex align-items-center justify-content-between justify-content-md-start">
+                        <div class="position-relative">
+                            <select class="form-select mb-2 mb-lg-0">
+                                <option value="Cheapest">Cheapest</option>
+                                <option value="Earliest">Earliest</option>
+                                <option value="Recomended">Recomended</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="border rounded carousel-wrap bg-white">
+                    <div class="owl-carousel  ">
+                        <div class="js-slide">
+                            <div class="py-3 border-right text-hover-primary">
+                                <div class="text-center py-1">
+                                    <a href="#">
+                                        <h6 class="font-weight-bold text-gray-3 mb-0">Fri,20 Sep</h6>
+                                        <span class="font-weight-normal text-gray-1">£ 350.48</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-slide">
+                            <div class="py-3 border-right text-hover-primary">
+                                <div class="text-center py-1">
+                                    <a href="#">
+                                        <h6 class="font-weight-bold text-gray-3 mb-0">Sat,21 Sep</h6>
+                                        <span class="font-weight-normal text-gray-1">£ 350.48</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-slide">
+                            <div class="py-3 border-right text-hover-primary">
+                                <div class="text-center py-1">
+                                    <a href="#">
+                                        <h6 class="font-weight-bold text-gray-3 mb-0">Sun,22 Sep</h6>
+                                        <span class="font-weight-normal text-gray-1">£ 350.48</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-slide">
+                            <div class="py-3 border-right text-hover-primary">
+                                <div class="text-center py-1">
+                                    <a href="#">
+                                        <h6 class="font-weight-bold text-gray-3 mb-0">Mon,23 Sep</h6>
+                                        <span class="font-weight-normal text-gray-1">£ 350.48</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-slide">
+                            <div class="py-3 border-right text-hover-primary">
+                                <div class="text-center py-1">
+                                    <a href="#">
+                                        <h6 class="font-weight-bold text-gray-3 mb-0">Tue,24 Sep</h6>
+                                        <span class="font-weight-normal text-gray-1">£ 350.48</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-slide">
+                            <div class="py-3 border-right text-hover-primary">
+                                <div class="text-center py-1">
+                                    <a href="#">
+                                        <h6 class="font-weight-bold text-gray-3 mb-0">Wed,25 Sep</h6>
+                                        <span class="font-weight-normal text-gray-1">£ 350.48</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-slide">
+                            <div class="py-3 border-right text-hover-primary">
+                                <div class="text-center py-1">
+                                    <a href="#">
+                                        <h6 class="font-weight-bold text-gray-3 mb-0">Thu,26 Sep</h6>
+                                        <span class="font-weight-normal text-gray-1">£ 350.48</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-slide">
+                            <div class="py-3 border-right text-hover-primary">
+                                <div class="text-center py-1">
+                                    <a href="#">
+                                        <h6 class="font-weight-bold text-gray-3 mb-0">Fri,27 Sep</h6>
+                                        <span class="font-weight-normal text-gray-1">£ 350.48</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ticket listing -->
+        <div class="card mt-5 shadow-none" style="background:#f1f5f9;">
+            <div class="card-body">
+                <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center mb-4 ">
+                    <h3 class="font-size-21 font-weight-bold mb-4 mb-md-0 text-lh-1 text-center text-md-left"
+                        id="searchCount">
+                        {{statistics}} results found.</h3>
+                    <div class="d-flex align-items-center justify-content-between justify-content-md-start">
+                    </div>
+
+                </div>
+                <div class="tab-content " id="itinerariesContainer">
+                    {% for group in itineraries %}
+
+                    {% for itinerary in group %}
+
+                    <div class="mb-5 itinerary" data-stop-count="{{ itinerary['stops'] }}"
+                        data-airline-code="{{ itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['airlineCode'] }}"
+                        data-cabin-class="{{ itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][0]['segment']['cabinCode'] }}">
+
+                        <div class="hover-bg-gray-1 border rounded-xs py-4 px-4 px-xl-5 bg-white">
+                            <div class="row align-items-center text-center">
+                                <div class="col-md mb-4 mb-md-0">
+                                    <img class="img-fluid" src="../static/img/90x90/img4.png" alt="Image-Description">
+                                    <p>{{get_airline_name(itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['airlineCode'])
+                                        }}</p>
+                                </div>
+                                <div class="col-md mb-4 mb-md-0">
+
+                                    {% for leg in itinerary['legs'] %}
+                                    {% set first_schedule = leg['ref']['schedules'][0] %}
+                                    <div class="flex-content-center d-block d-lg-flex">
+                                        <div class="mr-lg-3 mb-1 mb-lg-0">
+                                            <i class="fa fa-plane font-size-30 text-primary"></i>
+                                        </div>
+                                        <div class="text-lg-left">
+                                            <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">
+                                                {{
+                                                convert_and_format_time(first_schedule['ref']['departure']['time'])
+                                                }}</h6>
+                                            <span class="font-size-14 text-gray-1">{{
+                                                get_city_name(first_schedule['ref']['departure']['city']) }},
+                                                {{ get_country_name(first_schedule['ref']['departure']['country'])
+                                                }}</span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+                                </div>
+                                <div class="col-md mb-4 mb-md-0">
+                                    <div class="flex-content-center flex-column">
+                                        {% for leg in itinerary['legs'] %}
+                                        <h6 class="font-size-14 font-weight-bold text-gray-5 mb-0">
+                                            {{convert_duration(leg['ref']['elapsedTime'])}}
+                                            {% endfor %}
+                                        </h6>
+                                        <div class="width-60 border-top border-primary border-width-2 my-1">
+                                        </div>
+                                        <div class="font-size-14 text-gray-1">
+                                            {% for leg in itinerary['legs'] %}
+                                            {{ leg['stops'] }}
+                                            {% endfor %}
+                                            Stops
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md mb-4 mb-md-0">
+                                    {% for leg in itinerary['legs'] %}
+                                    {% set last_schedule = leg['ref']['schedules']|last %}
+                                    <div class="flex-content-center d-block d-lg-flex">
+                                        <div class="mr-lg-3 mb-1 mb-lg-0">
+                                            <i class="d-block rotate-180 fa fa-plane font-size-30 text-primary"></i>
+                                        </div>
+                                        <div class="text-lg-left">
+                                            <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">
+                                                {{ convert_and_format_time(last_schedule['ref']['arrival']['time'])
+                                                }}
+                                            </h6>
+                                            <span class="font-size-14 text-gray-1">{{
+                                                get_city_name(last_schedule['ref']['arrival']['city']) }},
+                                                {{ get_country_name(last_schedule['ref']['arrival']['country'])
+                                                }}</span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-2gdot8">
+                                    <div class="border-xl-left">
+                                        <div class="ml-xl-5">
+                                            <div class="mb-2">
+                                                <div class="mb-2 text-lh-1dot4">
+                                                    {% for pricing_info in itinerary['pricingInformation'] %}
+                                                    <span class="font-weight-bold font-size-22">{{
+                                                        pricing_info['fare']['totalFare']['currency'] }} {{
+                                                        pricing_info['fare']['totalFare']['totalPrice'] }}</span>
+                                                    {% endfor %}
+                                                </div>
+
+
+                                                <a href="{{ url_for('views.flightitinerary', OriginLocation='DAC', DestinationLocation='JFK', DepartureDateTime='2023-10-15T01:40:00',
+                                                ArrivalDateTime='2023-10-15T04:30:00', Airline='EK',  Number='585', ClassOfService='V', SeatsRequested='1', passengerCode='ADT') }}"
+                                                    class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100">Book
+                                                    Now</a>
+                                            </div>
+                                            <!-- On Target Modal -->
+                                            <a class="font-size-14 text-gray-1 d-block" data-bs-toggle="collapse"
+                                                href="#collapsetic-{{ itinerary['id'] }}" role="button"
+                                                aria-expanded="false" aria-controls="collapseExample">
+                                                Flight Details
+                                            </a>
+                                            <p>{{
+                                                itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][0]['segment']['cabinCode']
+                                                }}</p>
+                                            <!-- End On Target Modal -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="collapsetic-{{ itinerary['id'] }}" data-bs-parent="#accordion1"
+                            class="accordion-collapse collapse bg-white">
+                            <div class="container border rounded ">
+                                <div class="row my-4 ms-2">
+
+                                    <div class="col-lg-8 col-sm-7 ">
+                                        {% for leg in itinerary['legs'] %}
+                                        {% for schedule in leg['ref']['schedules'] %}
+                                        <div class="border p-4">
+                                            <div class="d-flex mb-2 ">
+                                                <div class=" w-10 h-10 me-4">
+                                                    <img class="img-fluid  " src="../static/img/90x90/img2.png">
+
+                                                </div>
+                                                <p class="text-black ps-1 border-bottom w-80 pb-2"><span
+                                                        class="fw-bold">{{get_airline_name(schedule['ref']['carrier']['operating'])}}</span><br>
+                                                    <small> BOEING 737-800 - 738</small>
+                                                </p>
+                                            </div>
+                                            <div class="row text-center">
+                                                <div class="col-lg-5 col-sm-5" style="vertical-align:center;">
+                                                    <p class=" m-0">{{format_date(departure_date)}}</p>
+                                                    <h5 class=" mb-0"> <span class="fw-bold" style="font-size: 22px;">{{convert_and_format_time(schedule['ref']['departure']['time'])}}</span>
+                                                    </h5>
+                                                    <p>{{get_airport_name(schedule['ref']['departure']['airport'])}}
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-2">
+                                                    <div class="">
+                                                        <i
+                                                            class="fa fa-plane font-size-20 text-primary  mx-2 my-2 "></i>
+                                                        <p>{{convert_duration(schedule['ref']['elapsedTime'])}}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-5 ">
+                                                    <p class="fw-bold m-1">[NOT FOUND in API]</p>
+                                                    <h5 class=" mb-0"><span class="fw-bold"
+                                                            style="font-size: 22px;">{{convert_and_format_time(schedule['ref']['arrival']['time'])}}</span>
+                                                    </h5>
+                                                    <p>{{get_airport_name(schedule['ref']['arrival']['airport'])}}
+                                                    </p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        {% endfor %}
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="col-lg-4 col-sm-5 ">
+                                        <div class="">
+                                            <h4>Refund Policy</h4>
+                                            <div class="width-60 border-top border-primary border-width-2 my-1 ">
+                                            </div>
+                                            <div>
+                                                <p>
+                                                    1. Refund and Date Change are done as per the following
+                                                    policies.
+                                                </p>
+                                                <p>
+                                                    2. Refund Amount= Refund Charge (as per airline policy +
+                                                    Travel360 Convenience Fee).
+                                                </p>
+                                                <p>
+                                                    3. Date Change Amount= Date Change Fee (as per Airline Policy +
+                                                    Travel360 Convenience Fee).
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4>Other Details</h4>
+                                            <div class="width-60 border-top border-primary border-width-2"></div>
+
+                                            <div class=" mt-3 mb-0 d-flex p-0"><i
+                                                    class="fa-solid fa-chair mt-1 me-3"></i>
+                                                {% for pricing_info in itinerary['pricingInformation'] %}
+                                                {% for passenger_info in pricing_info['fare']['passengerInfoList']
+                                                %}
+                                                {% for fare_component in
+                                                passenger_info['passengerInfo']['fareComponents'] %}
+                                                <p class="font-weight-bold font-size-15">{{
+                                                    fare_component['segments'][0]['segment']['seatsAvailable']}}
+                                                    Seats
+                                                </p>
+                                                {% endfor %}
+                                                {% endfor %}
+                                                {% endfor %}
+                                            </div>
+                                            {% for pricing_info in itinerary['pricingInformation'] %}
+                                            {% for baggage_item in
+                                            pricing_info['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation']
+                                            %}
+                                            <div class="d-flex"><i class="fa-solid fa-suitcase-rolling me-2"></i>
+                                                {% if 'pieceCount' in baggage_item['allowance'] %}
+                                                {{ baggage_item['allowance']['pieceCount'] }} Pieces
+                                                {% else %}
+                                                Piece count does not exist
+                                                {% endif %}
+                                            </div>
+                                            {% endfor %}
+                                            {% endfor %}
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+
+
+                    <div class="text-center text-md-left font-size-14 mb-3 text-lh-1">Showing 1–15</div>
+                    <nav aria-label="Page navigation">
+                        <ul
+                            class="list-pagination-1 pagination border border-color-4 rounded-sm mb-5 mb-lg-0 overflow-auto overflow-xl-visible justify-content-md-center align-items-center py-2">
+                            <li class="page-item">
+                                <a class="page-link border-right rounded-0 text-gray-5" href="#" aria-label="Previous">
+                                    <i class="flaticon-left-direction-arrow font-size-10 font-weight-bold"></i>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link font-size-14" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link font-size-14 active" href="#">2</a>
+                            </li>
+                            <li class="page-item"><a class="page-link font-size-14" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link font-size-14" href="#">4</a></li>
+                            <li class="page-item"><a class="page-link font-size-14" href="#">5</a></li>
+                            <li class="page-item disabled"><a class="page-link font-size-14" href="#">...</a></li>
+                            <li class="page-item"><a class="page-link font-size-14" href="#">66</a></li>
+                            <li class="page-item"><a class="page-link font-size-14" href="#">67</a></li>
+                            <li class="page-item">
+                                <a class="page-link border-left rounded-0 text-gray-5" href="#" aria-label="Next">
+                                    <i class="flaticon-right-thin-chevron font-size-10 font-weight-bold"></i>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Price Range Carousel End-->
+
+    {% endif %}
+
+
+    <script>
+        function filterItineraries() {
+            const selectedCheckboxesStops = document.querySelectorAll('input[name="stops"]:checked');
+            const selectedStopValues = Array.from(selectedCheckboxesStops).map(checkbox => checkbox.value);
+
+            const selectedCheckboxesAirlines = document.querySelectorAll('.airline-checkbox:checked');
+            const selectedAirlineValues = Array.from(selectedCheckboxesAirlines).map(checkbox => checkbox.id);
+
+            const selectedCheckboxesCabinClass = document.querySelectorAll('.cabin-class-checkbox:checked');
+            const selectedCabinClassValues = Array.from(selectedCheckboxesCabinClass).map(checkbox => checkbox.id);
+
+            const itineraries = document.querySelectorAll('.itinerary');
+
+            itineraries.forEach(itinerary => {
+                const stops = parseInt(itinerary.getAttribute('data-stop-count'));
+                const airline = itinerary.getAttribute('data-airline-code');
+                const cabinClass = itinerary.getAttribute('data-cabin-class');
+
+                const isStopFiltered = selectedStopValues.length === 0 || selectedStopValues.includes(stops.toString());
+                const isAirlineFiltered = selectedAirlineValues.length === 0 || selectedAirlineValues.includes(airline);
+                const isCabinClassFiltered = selectedCabinClassValues.length === 0 || selectedCabinClassValues.includes(cabinClass);
+
+                if (isStopFiltered && isAirlineFiltered && isCabinClassFiltered) {
+                    itinerary.style.display = 'block';
+                } else {
+                    itinerary.style.display = 'none';
+                }
+            });
+
+            // Count visible itineraries
+            const visibleItineraries = document.querySelectorAll('.itinerary[style="display: block;"]');
+            const searchCount = document.getElementById('searchCount');
+            if (searchCount) {
+                searchCount.textContent = visibleItineraries.length + ' results found.';
+            }
+        }
+
+        const checkboxesStops = document.querySelectorAll('input[name="stops"]');
+        checkboxesStops.forEach(checkbox => {
+            checkbox.addEventListener('change', filterItineraries);
+        });
+
+        const checkboxesAirlines = document.querySelectorAll('.airline-checkbox');
+        checkboxesAirlines.forEach(checkbox => {
+            checkbox.addEventListener('change', filterItineraries);
+        });
+
+        const checkboxesCabinClass = document.querySelectorAll('.cabin-class-checkbox');
+        checkboxesCabinClass.forEach(checkbox => {
+            checkbox.addEventListener('change', filterItineraries);
+        });
+
+        // Initial call to set the count when the page loads
+        filterItineraries();
+    </script>
+
+
+
+    {% endblock %}

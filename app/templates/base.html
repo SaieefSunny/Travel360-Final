@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Codescandy">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+        integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css"
+        integrity="sha512-LX0YV/MWBEn2dwXCYgQHrpa9HJkwB+S+bnBpifSOTO1No27TqNMKYoAn6ff2FBh03THAzAiiCwQ+aPX+/Qt/Ow=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/6.2.5/simplebar.css"
+        integrity="sha512-08T4cwCCcdn+1J5Kne6cRZwBFGo11KAc8b9dk6vDFkdscSz9L/rVUGl+kbIT8zQbBGqxkYwjz+HoZNp6B8bA7A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.42.0/apexcharts.min.css"
+        integrity="sha512-nnNXPeQKvNOEUd+TrFbofWwHT0ezcZiFU5E/Lv2+JlZCQwQ/ACM33FxPoQ6ZEFNnERrTho8lF0MCEH9DBZ/wWw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+        integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- main css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Travel360-{% block title %}Base{% endblock %}</title>
+
+    <style>
+        /* Add these styles to your CSS */
+        .dropdown-from-content,
+        .dropdown-to-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            max-height: 450px;
+            overflow-y: auto;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-from-content div,
+        .dropdown-to-content div {
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-from-content div:hover,
+        .dropdown-to-content div:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <main id="main-wrapper" class="main-wrapper">
+
+        <div class="header">
+            <!-- navbar start -->
+            <div class="navbar-custom navbar navbar-expand-lg">
+                <div class="container-fluid px-0">
+
+                    <a id="nav-toggle" href="#!" class="ms-md-0 me-0 me-lg-3 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
+                            class="bi bi-text-indent-left text-muted" viewBox="0 0 16 16">
+                            <path
+                                d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm.646 2.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L4.293 8 2.646 6.354a.5.5 0 0 1 0-.708zM7 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm-5 3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+                        </svg></a>
+                    <a class="navbar-brand d-block d-md-none " href="{{url_for('views.home')}}">
+                        <h4>Travel360</h4>
+                    </a>
+                    <div class="d-none d-md-none d-lg-block">
+                        <!-- Search Box -->
+                        <form action="#">
+                            <div class="input-group ">
+                                <input class="form-control rounded-3" type="search" value="" id="searchInput"
+                                    placeholder="Search">
+                                <span class="input-group-append">
+                                    <button class="btn  ms-n10 rounded-0 rounded-end" type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-search text-dark">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <!--Notification part -->
+                    <ul
+                        class="navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0">
+                        </li>
+
+                        <li class="dropdown stopevent ms-2">
+                            <a class="btn btn-ghost btn-icon rounded-circle" href="#!" role="button"
+                                id="dropdownNotification" data-bs-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <i class="icon-xs" data-feather="bell"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end"
+                                aria-labelledby="dropdownNotification">
+                                <div>
+                                    <div class="border-bottom px-3 pt-2 pb-3 d-flex
+              justify-content-between align-items-center">
+                                        <p class="mb-0 text-dark fw-medium fs-4">Notifications</p>
+                                        <a href="settings" class="text-muted">
+                                            <span>
+                                                <i class="me-1 icon-xs" data-feather="settings"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div data-simplebar style="height: 250px;">
+
+                                        <ul class="list-group list-group-flush notification-list-scroll">
+
+                                            <li class="list-group-item bg-light">
+                                                <a href="#!" class="text-muted">
+                                                    <h5 class=" mb-1">50% less price</h5>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                    <div class="border-top px-3 py-2 text-center">
+                                        <a href="#!" class="text-inherit ">
+                                            View all Notifications
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- profile part  -->
+                        <li class="dropdown ms-2">
+                            <a class="rounded-circle" href="#!" role="button" id="dropdownUser"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="avatar avatar-md avatar-indicators avatar-online">
+                                    <img alt="avatar" src="https://i.ibb.co/P63D45j/face2.jpg" class="rounded-circle">
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                                <div class="px-4 pb-0 pt-2">
+
+
+                                    <div class="lh-1 ">
+                                        <h5 class="mb-1"> Jenny E. Grainger</h5>
+                                        <a href="viewprofile" class="text-inherit fs-6">View my profile</a>
+                                    </div>
+                                    <div class=" dropdown-divider mt-3 mb-2"></div>
+                                </div>
+
+                                <ul class="list-unstyled">
+
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" href="settings">
+
+                                            <i class="me-2 icon-xxs dropdown-item-icon"
+                                                data-feather="settings"></i>Settings
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{url_for('auth.login')}}">
+                                            <i class="me-2 icon-xxs dropdown-item-icon" data-feather="power"></i>Login
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- navbar vertical -->
+        <div class="app-menu">
+            <!-- Sidebar -->
+
+            <div class="navbar-vertical navbar nav-dashboard">
+                <div class="h-100" data-simplebar>
+                    <!--  logo -->
+                    <a class="navbar-brand" href="{{url_for('views.home')}}">
+                        <h4>Travel360</h4>
+                    </a>
+                    <!-- Navbar nav -->
+                    <ul class="navbar-nav flex-column" id="sideNavbar">
+
+                        <!-- Navbar item -->
+                        <li class="nav-item">
+                            <a class="nav-link has-arrow " href="{{url_for('views.home')}}">
+                                <i class="fa fa-home nav-icon me-2"></i>
+                                </i> Dashboard
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link has-arrow " href="#!" data-bs-toggle="collapse"
+                                data-bs-target="#navFlights" aria-expanded="false" aria-controls="navFlights">
+                                <i class="fa fa-plane-departure nav-icon me-2"></i>
+                                Flights
+                            </a>
+
+                            <div id="navFlights" class="collapse  show " data-bs-parent="#sideNavbar">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link has-arrow " href="{{url_for('views.flights')}}">
+                                            Search Flights
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{url_for('views.flightshistory')}}">
+                                            Flights history </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link has-arrow " href="#!" data-bs-toggle="collapse"
+                                data-bs-target="#navHotels" aria-expanded="false" aria-controls="navHotels">
+                                <i class="fa fa-hotel nav-icon me-2"></i>
+                                Hotels
+                            </a>
+
+                            <div id="navHotels" class="collapse  show " data-bs-parent="#sideNavbar">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link has-arrow " href="{{url_for('views.hotels')}}">
+                                            Search Hotels
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link  " href="{{url_for('views.hotelshistory')}}">
+                                            Hotels history </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link has-arrow " href="#!" data-bs-toggle="collapse"
+                                data-bs-target="#navBooking" aria-expanded="false" aria-controls="navBooking">
+                                <i class="fa fa-bookmark nav-icon me-2"></i>
+                                Booking History
+                            </a>
+
+                            <div id="navBooking" class="collapse  show " data-bs-parent="#sideNavbar">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link has-arrow " href="flightsbookinghistory">
+                                            Flights
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link  " href="hotelsbookingserach">
+                                            Hotels </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link has-arrow " href="#!" data-bs-toggle="collapse"
+                                data-bs-target="#navEmployees" aria-expanded="false" aria-controls="navEmployees">
+                                <i class="fa fa-user-tie nav-icon me-2"></i>
+                                Employees
+                            </a>
+
+                            <div id="navEmployees" class="collapse  show " data-bs-parent="#sideNavbar">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link has-arrow " href="allemployees">
+                                            Add Employees
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link  " href="allemployees">
+                                            All Employees </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </li>
+
+
+                        <li class="nav-item">
+
+                            <a class="nav-link has-arrow " href="#" data-bs-toggle="collapse"
+                                data-bs-target="#navCustomers" aria-expanded="false" aria-controls="navCustomers">
+                                <i class="fa fa-user nav-icon me-2"></i>
+                                Customers
+                            </a>
+
+                            <div id="navCustomers" class="collapse  show " data-bs-parent="#sideNavbar">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link has-arrow " href="addcustomers">
+                                            Add Customers
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link  " href="allcustomers">
+                                            All Customers </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Page content Start -->
+        <div id="app-content">
+
+            <!-- Container fluid -->
+
+            <div class="app-content-area">
+                <div class="pt-10 pb-21 mt-n6 mx-n4"></div>
+                <div class="container-fluid mt-n22 ">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-12">
+                            <!-- Page heading -->
+
+                            <div class="mb-2 mb-lg-0">
+                                <h3 class="mb-0  ">{% block header %}{% endblock %}</h3>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% block base %} {% endblock %}
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
+        integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.1/feather.min.js"
+        integrity="sha512-4lykFR6C2W55I60sYddEGjieC2fU79R7GUtaqr3DzmNbo0vSaO1MfUjMoTFYYuedjfEix6uV9jVTtRCSBU/Xiw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/6.2.5/simplebar.min.js"
+        integrity="sha512-HV1U44HR4mYVDcsxzJpghYyGEy2PvbePe9UFXlV3vnzf4yFhbKA9QNpnhy4VWwnaC2jKzijITVWHPZBCOuc51g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.42.0/apexcharts.min.js"
+        integrity="sha512-HctQcT5hnI/elQck4950pvd50RuDnjCSGSoHI8CNyQIYVxsUoyJ+gSQIOrll4oM/Z7Kfi7WCLMIbJbiwYHFCpA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.js"
+        integrity="sha512-6LKCH7i2+zMNczKuCT9ciXgFCKFp3MevWTZUXDlk7azIYZ2wF5LRsrwZqO7Flt00enUI+HwzzT5uhOvy6MNPiA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+        integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- main js -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+    <script>
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            loop: true,
+            nav: false,
+            margin: 10,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 3
+                },
+                960: {
+                    items: 5
+                },
+                1200: {
+                    items: 6
+                }
+            }
+        });
+        owl.on('mousewheel', '.owl-stage', function (e) {
+            if (e.deltaX > 0) {
+                // Scroll to the right
+                owl.trigger('next.owl');
+            } else {
+                // Scroll to the left
+                owl.trigger('prev.owl');
+            }
+            e.preventDefault();
+        });
+
+        // For Add or Remove Flight Multi City Option Start
+        $(document).ready(function () {
+            $("#addMulticityRow").on('click', (function () {
+                let a = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+
+                if (document.querySelectorAll('.multi_city_form').length === 5) {
+                    alert("Max Citry Limit Reached!!")
+                    return;
+                }
+                $(".multi_city_form_wrapper").append(`
+        
+        <div class="multi_city_form">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="multi_form_remove">
+                    <button type="button"
+                        id="remove_multi_city">Remove</button>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="flight_Search_boxed">
+                    <p>From</p>
+                    <input type="text" value="New York">
+                    <span>DAC, Hazrat Shahajalal
+                        International...</span>
+                    <div class="plan_icon_posation">
+                        <i class="fas fa-plane-departure"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="flight_Search_boxed">
+                    <p>To</p>
+                    <input type="text" value="London ">
+                    <span>CXB, London  Airport</span>
+                    <div class="plan_icon_posation">
+                        <i class="fas fa-plane-arrival"></i>
+                    </div>
+                    <div class="range_plan">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form_search_date">
+                    <div
+                        class="flight_Search_boxed date_flex_area">
+                        <div class="Journey_date">
+                            <p>Journey date</p>
+                            <input type="date" value="2022-05-18">
+                            <span>Thursday</span>
+                        </div>
+                        <div class="Journey_date">
+                            <p>Return date</p>
+                            <input type="date" value="2022-05-20">
+                            <span>Saturday</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2  col-md-6 col-sm-12 col-12">
+            <div
+                class="flight_Search_boxed dropdown_passenger_area">
+                <p>Passenger, Class </p>
+                <div class="dropdown">
+                    <button
+                        class="dropdown-toggle final-count"
+                        data-toggle="dropdown" type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        0 Passenger
+                    </button>
+                    <div class="dropdown-menu dropdown_passenger_info"
+                        aria-labelledby="dropdownMenuButton1">
+                        <div
+                            class="traveller-calulate-persons">
+                            <div class="passengers">
+                                <h6>Passengers</h6>
+                                <div
+                                    class="passengers-types">
+                                    <div
+                                        class="passengers-type">
+                                        <div class="text">
+                                            <span
+                                                class="count pcount">2</span>
+                                            <div
+                                                class="type-label">
+                                                <p>Adult</p>
+                                                <span>12+
+                                                    yrs</span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="button-set">
+                                            <button
+                                                type="button"
+                                                class="btn-add">
+                                                <i
+                                                    class="fas fa-plus"></i>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn-subtract">
+                                                <i
+                                                    class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="passengers-type">
+                                        <div class="text">
+                                            <span
+                                                class="count ccount">0</span>
+                                            <div
+                                                class="type-label">
+                                                <p
+                                                    class="fz14 mb-xs-0">
+                                                    Children
+                                                </p><span>2
+                                                    - Less
+                                                    than 12
+                                                    yrs</span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="button-set">
+                                            <button
+                                                type="button"
+                                                class="btn-add-c">
+                                                <i
+                                                    class="fas fa-plus"></i>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn-subtract-c">
+                                                <i
+                                                    class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="passengers-type">
+                                        <div class="text">
+                                            <span
+                                                class="count incount">0</span>
+                                            <div
+                                                class="type-label">
+                                                <p
+                                                    class="fz14 mb-xs-0">
+                                                    Infant
+                                                </p><span>Less
+                                                    than 2
+                                                    yrs</span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="button-set">
+                                            <button
+                                                type="button"
+                                                class="btn-add-in">
+                                                <i
+                                                    class="fas fa-plus"></i>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn-subtract-in">
+                                                <i
+                                                    class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cabin-selection">
+                                <h6>Cabin Class</h6>
+                                <div class="cabin-list">
+                                    <button type="button"
+                                        class="label-select-btn">
+                                        <span
+                                            class="muiButton-label">Economy
+                                        </span>
+                                    </button>
+                                    <button type="button"
+                                        class="label-select-btn active">
+                                        <span
+                                            class="muiButton-label">
+                                            Business
+                                        </span>
+                                    </button>
+                                    <button type="button"
+                                        class="label-select-btn">
+                                        <span
+                                            class="MuiButton-label">First
+                                            Class </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span>Business</span>
+            </div>
+        </div>
+        </div>
+    </div>
+        `);
+
+            }))
+            // Remove Button Click 
+            $(document).on('click', (function (e) {
+                if (e.target.id === "remove_multi_city") {
+                    $(e.target).parent().closest('.multi_city_form').remove()
+                }
+            })
+
+            )
+
+        });
+    </script>
+
+
+
+    <script>
+
+
+        let rangeMin = 100;
+        const range = document.querySelector(".range-selected");
+        const rangeInput = document.querySelectorAll(".range-input input");
+        const rangePrice = document.querySelectorAll(".range-price input");
+
+        rangeInput.forEach((input) => {
+            input.addEventListener("input", (e) => {
+                let minRange = parseInt(rangeInput[0].value);
+                let maxRange = parseInt(rangeInput[1].value);
+                if (maxRange - minRange < rangeMin) {
+                    if (e.target.className === "min") {
+                        rangeInput[0].value = maxRange - rangeMin;
+                    } else {
+                        rangeInput[1].value = minRange + rangeMin;
+                    }
+                } else {
+                    rangePrice[0].value = minRange;
+                    rangePrice[1].value = maxRange;
+                    range.style.left = (minRange / rangeInput[0].max) * 100 + "%";
+                    range.style.right = 100 - (maxRange / rangeInput[1].max) * 100 + "%";
+                }
+            });
+        });
+
+
+        rangePrice.forEach((input) => {
+            input.addEventListener("input", (e) => {
+                let minPrice = rangePrice[0].value;
+                let maxPrice = rangePrice[1].value;
+                if (maxPrice - minPrice >= rangeMin && maxPrice <= rangeInput[1].max) {
+                    if (e.target.className === "min") {
+                        rangeInput[0].value = minPrice;
+                        range.style.left = (minPrice / rangeInput[0].max) * 100 + "%";
+                    } else {
+                        rangeInput[1].value = maxPrice;
+                        range.style.right = 100 - (maxPrice / rangeInput[1].max) * 100 + "%";
+                    }
+                }
+            });
+        });
+
+    </script>
+
+
+    <script>
+        let adultCount = 1;
+        let childCount = 0;
+        let infantCount = 0;
+
+        // Function to update the count and display
+        function updateCount(section, count) {
+            $(`.${section}count`).text(count);
+            updateTotalCount();
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        // Function to update the total count and display in the button
+        function updateTotalCount() {
+            const totalCount = adultCount + childCount + infantCount;
+            const buttonText = `${totalCount} Passenger${totalCount !== 1 ? 's' : ''}`;
+            $('.final-count').text(buttonText);
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        // Click event for adding adults
+        $('.btn-add').on('click', function () {
+            adultCount++;
+            updateCount('p', adultCount);
+            event.stopPropagation();
+            event.preventDefault();
+        });
+
+        // Click event for subtracting adults
+        $('.btn-subtract').on('click', function () {
+            if (adultCount > 0) {
+                adultCount--;
+                updateCount('p', adultCount);
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        });
+
+        // Click event for adding children
+        $('.btn-add-c').on('click', function () {
+            childCount++;
+            updateCount('c', childCount);
+            event.stopPropagation();
+            event.preventDefault();
+        });
+
+        // Click event for subtracting children
+        $('.btn-subtract-c').on('click', function () {
+            if (childCount > 0) {
+                childCount--;
+                updateCount('c', childCount);
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        });
+
+        // Click event for adding infants
+        $('.btn-add-in').on('click', function () {
+            infantCount++;
+            updateCount('in', infantCount);
+            event.stopPropagation();
+            event.preventDefault();
+        });
+
+        // Click event for subtracting infants
+        $('.btn-subtract-in').on('click', function () {
+            if (infantCount > 0) {
+                infantCount--;
+                updateCount('in', infantCount);
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        });
+
+        function selectCabin(button) {
+
+            const buttons = document.querySelectorAll('.label-select-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            button.classList.add('active');
+            const selectedCabin = button.querySelector('.muiButton-label').textContent;
+
+            document.getElementById('selected-cabin').textContent = `${selectedCabin}`;
+
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+
+        const datePicker = document.getElementById('datePicker');
+
+
+        function openDatePicker() {
+            datePicker.click();
+        }
+
+        // Attach a click event listener to the input value
+        datePicker.addEventListener('click', openDatePicker);
+
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Function to get the user's location and update the nearest airport
+            function getUserLocation() {
+                const cachedData = localStorage.getItem('geolocationData');
+                if (cachedData) {
+                    // If cached data exists, use it
+                    const data = JSON.parse(cachedData);
+                    updateNearestAirport(data);
+                } else if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const apiKey = '7b7762b2-953b-4699-a810-6858def7f7b6';
+                        const apiUrl = `https://airlabs.co/api/v9/nearby?lat=${lat}&lng=${lng}&distance=50&api_key=${apiKey}`;
+
+                        fetch(apiUrl)
+                            .then((response) => response.json())
+                            .then((data) => {
+                                // Cache the geolocation data
+                                localStorage.setItem('geolocationData', JSON.stringify(data));
+                                updateNearestAirport(data);
+                            })
+                            .catch((error) => console.error(error));
+                    });
+                } else {
+                    console.log('Geolocation is not supported by this browser.');
+                }
+            }
+
+            function updateNearestAirport(data) {
+                const airports = data.response.airports;
+                // Find the most popular airport
+                const mostPopularAirport = airports.reduce((prev, current) =>
+                    prev.popularity > current.popularity ? prev : current
+                );
+
+                const airportName = mostPopularAirport.name;
+                const airportIATACode = mostPopularAirport.iata_code;
+                const airportCountryCode = mostPopularAirport.country_code;
+
+                // Update the input and span with the nearest airport data
+                $('#userLocationFrom').val(airportCountryCode);
+                $('#airportNameFrom').text(airportName);
+
+                // Set the IATA code in the hidden input
+                $('#iataFrom').val(airportIATACode);
+            }
+
+            getUserLocation();
+        });
+
+
+    </script>
+
+
+
+    <script>
+        function filterAirports(inputElement, dropdownElement, countryElement, airportNameElement, iataElement) {
+            const userLocation = inputElement.value.toLowerCase();
+            dropdownElement.innerHTML = "";
+
+            // Fetch airport suggestions from the database
+            fetch(`/get_airport_suggestions?search=${userLocation}`)
+                .then(response => response.json())
+                .then(data => {
+                    const airports = data.airports;
+                    airports.forEach(airport => {
+                        const country = airport.country_name;
+                        const name = airport.name;
+                        const iata = airport.iata_code;
+
+                        const option = document.createElement("div");
+                        option.className = "airport-option";
+                        option.textContent = `${country} - ${name}`;
+                        option.addEventListener("click", () => {
+                            inputElement.value = country;
+                            countryElement.textContent = country;
+                            airportNameElement.textContent = name;
+                            iataElement.value = iata;
+                            dropdownElement.innerHTML = "";
+                        });
+                        dropdownElement.appendChild(option);
+                    });
+
+                    // Show the dropdown
+                    dropdownElement.style.display = "block";
+                })
+                .catch(error => console.error(error));
+        }
+
+        // Attach input event listener to the "From" input
+        const userLocationFromInput = document.getElementById("userLocationFrom");
+        const airportDropdownFrom = document.getElementById("airportDropdownFrom");
+        const countryNameFrom = document.getElementById("airportNameFrom");
+        const iataFrom = document.getElementById("iataFrom");
+
+        userLocationFromInput.addEventListener("input", () => {
+            filterAirports(userLocationFromInput, airportDropdownFrom, countryNameFrom, countryNameFrom, iataFrom);
+        });
+
+        // Attach input event listener to the "To" input
+        const userLocationToInput = document.getElementById("userLocationTo");
+        const airportDropdownTo = document.getElementById("airportDropdownTo");
+        const countryNameTo = document.getElementById("airportNameTo");
+        const iataTo = document.getElementById("iataTo");
+
+        userLocationToInput.addEventListener("input", () => {
+            filterAirports(userLocationToInput, airportDropdownTo, countryNameTo, countryNameTo, iataTo);
+        });
+
+
+        // Close the dropdown when clicking outside
+        document.addEventListener("click", (event) => {
+            if (!event.target.matches("#userLocationFrom") && !event.target.matches("#airportDropdownFrom")) {
+                airportDropdownFrom.style.display = "none";
+            }
+            if (!event.target.matches("#userLocationTo") && !event.target.matches("#airportDropdownTo")) {
+                airportDropdownTo.style.display = "none";
+            }
+        });
+
+
+
+
+        function formatTime(timeString) {
+            const parts = timeString.split(' ');
+            const time = parts[1];
+            const hoursMinutes = time.split(':');
+            const hours = parseInt(hoursMinutes[0]);
+            const minutes = parseInt(hoursMinutes[1]);
+
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ' ' + ampm;
+            return formattedTime;
+        }
+
+        $(document).ready(function () {
+
+            // Function to set the day of the week
+            function setDayOfWeek() {
+                const journeyDateInput = document.getElementById("journeyDate");
+                const journeyDaySpan = document.getElementById("journeyDay");
+
+                const selectedDate = new Date(journeyDateInput.value);
+                const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
+                    'Saturday'];
+                const dayOfWeek = daysOfWeek[selectedDate.getDay()];
+                journeyDaySpan.textContent = dayOfWeek;
+            }
+
+            const journeyDateInput = document.getElementById("journeyDate");
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(currentDate.getDate()).padStart(2, '0');
+            const today = `${year}-${month}-${day}`;
+            journeyDateInput.value = today;
+
+            setDayOfWeek();
+            journeyDateInput.addEventListener("input", setDayOfWeek);
+
+        });
+
+    </script>
+
+</body>
+
+</html>

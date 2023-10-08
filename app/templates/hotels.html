@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+{% block title %}Search Hotels{% endblock %}
+{% block base %}
+{% block header %}Search Hotels{% endblock %}
+
+
+<div class="row  mt-4 ">
+  
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+        <div class="card">
+            <div class="card-body">
+        
+                <div class="search_form_area">
+                    <div type="button" class="btn btn-primary ">Hotels</div>
+                        
+                        <div class=" fade show active mt-4" id="hotels" >
+                            <div class="row">
+                                <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+                                    <div class="tour_search_form">
+                                        <form action="#!">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-12">
+                                                    <div class="flight_Search_boxed">
+                                                        <p>Destination</p>
+                                                        <input type="text" placeholder="Where are you going?">
+                                                        <span>Where are you going?</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-12">
+                                                    <div class="form_search_date">
+                                                        <div class="flight_Search_boxed date_flex_area">
+                                                            <div class="Journey_date">
+                                                                <p>Journey date</p>
+                                                                <input type="date" value="2022-05-03">
+                                                                <span>Thursday</span>
+                                                            </div>
+                                                            <div class="Journey_date">
+                                                                <p>Return date</p>
+                                                                <input type="date" value="2022-05-05">
+                                                                <span>Thursday</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-xl-2 col-md-12 col-sm-12 col-12">
+                                                    <div class="flight_Search_boxed dropdown_passenger_area">
+                                                        <p>Passenger, Class </p>
+                                                        <div class="dropdown">
+                                                            <button class="dropdown-toggle final-count"
+                                                                data-toggle="dropdown" type="button"
+                                                                id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                                aria-expanded="false">
+                                                                0 Passenger
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown_passenger_info"
+                                                                aria-labelledby="dropdownMenuButton1">
+                                                                <div class="traveller-calulate-persons">
+                                                                    <div class="passengers">
+                                                                        <h6>Passengers</h6>
+                                                                        <div class="passengers-types">
+                                                                            <div class="passengers-type">
+                                                                                <div class="text"><span
+                                                                                        class="count pcount">0</span>
+                                                                                    <div class="type-label">
+                                                                                        <p>Adult</p>
+                                                                                        <span>12+
+                                                                                            yrs</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="button-set">
+                                                                                    <button type="button"
+                                                                                        class="btn-add">
+                                                                                        <i class="fas fa-plus"></i>
+                                                                                    </button>
+                                                                                    <button type="button"
+                                                                                        class="btn-subtract">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="passengers-type">
+                                                                                <div class="text"><span
+                                                                                        class="count ccount">0</span>
+                                                                                    <div class="type-label">
+                                                                                        <p class="fz14 mb-xs-0">
+                                                                                            Children
+                                                                                        </p><span>2
+                                                                                            - Less than
+                                                                                            12
+                                                                                            yrs</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="button-set">
+                                                                                    <button type="button"
+                                                                                        class="btn-add-c">
+                                                                                        <i class="fas fa-plus"></i>
+                                                                                    </button>
+                                                                                    <button type="button"
+                                                                                        class="btn-subtract-c">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="passengers-type">
+                                                                                <div class="text"><span
+                                                                                        class="count incount">0</span>
+                                                                                    <div class="type-label">
+                                                                                        <p class="fz14 mb-xs-0">
+                                                                                            Infant
+                                                                                        </p><span>Less
+                                                                                            than 2
+                                                                                            yrs</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="button-set">
+                                                                                    <button type="button"
+                                                                                        class="btn-add-in">
+                                                                                        <i class="fas fa-plus"></i>
+                                                                                    </button>
+                                                                                    <button type="button"
+                                                                                        class="btn-subtract-in">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="cabin-selection">
+                                                                        <h6>Cabin Class</h6>
+                                                                        <div class="cabin-list">
+                                                                            <button type="button"
+                                                                                class="label-select-btn"
+                                                                                onclick="selectCabin(this)">
+                                                                                <span
+                                                                                    class="muiButton-label">Economy</span>
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                class="label-select-btn active"
+                                                                                onclick="selectCabin(this)">
+                                                                                <span
+                                                                                    class="muiButton-label">Business</span>
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                class="label-select-btn"
+                                                                                onclick="selectCabin(this)">
+                                                                                <span class="muiButton-label">First
+                                                                                    Class</span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <span>Business</span>
+                                                    </div>
+                                                </div>
+                                                <div class="top_form_search_button">
+                                                    <button class="btn btn-outline-primary">Search</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="row mt-4 ms-lg-10 me-lg-10">
+    <div class=" col-sm-12 col-md-12 col-lg-3">
+        <div class="card  mt-3 bg-gray">
+            <div class="card-body">
+                <div class="accordion mb-4" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" style="padding:0;margin:0;">
+                            <button class="accordion-button border-0" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                                <span
+                                    class="d-block font-size-lg-15 font-size-17 font-weight-bold text-dark border-0">No.
+                                    of
+                                    Stops</span>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show"
+                            data-bs-parent="#accordionStops">
+                            <div class="accordion-body">
+                                <!-- Checkboxes -->
+                                <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="1">
+                                        <label class="custom-control-label" for="1">Non
+                                            Stop</label>
+                                    </div>
+                                </div>
+                                <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="2">
+                                        <label class="custom-control-label" for="2">1
+                                            Stop</label>
+                                    </div>
+                                </div>
+                                <div class="form-group font-size-1 text-lh-md text-gray-1 mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="3">
+                                        <label class="custom-control-label" for="3">2
+                                            Stop</label>
+                                    </div>
+                                </div>
+                                <div class="form-group font-size-1 text-lh-md text-gray-1 mb-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="4">
+                                        <label class="custom-control-label" for="4">3
+                                            Stop</label>
+                                    </div>
+                                </div>
+                                <!-- End Checkboxes -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion mb-4" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                aria-expanded="false" aria-controls="collapseTwo">
+                                <span
+                                    class="d-block font-size-lg-15 font-size-17 font-weight-bold text-dark">Price
+                                    Range($)</span>
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse show"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body ">
+                                <div class="range mt-4">
+                                    <div class="range-slider">
+                                        <span class="range-selected"></span>
+                                    </div>
+                                    <div class="range-input">
+                                        <input type="range" class="min" min="0" max="1000" value="0"
+                                            step="50">
+                                        <input type="range" class="max" min="0" max="1000" value="1000"
+                                            step="50">
+                                    </div>
+                                    <div class="range-price d-flex justify-content-between">
+                                        <span>$ <input type="number" name="min" value="300"
+                                                class="border-0 ms-0"></span>
+                                        <span>$ <input type="number" name="max" value="1000"
+                                                class="border-0 ms-0"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion mb-4" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                aria-expanded="false" aria-controls="collapseThree">
+                                <span
+                                    class="font-weight-bold font-size-17 text-dark mb-3">Airlines</span>
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse show"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div
+                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="brandAdidas">
+                                        <label class="custom-control-label" for="brandAdidas">Turkish
+                                            Airlines</label>
+                                    </div>
+                                    <small>749</small>
+                                </div>
+                                <div
+                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="brandNewBalance">
+                                        <label class="custom-control-label" for="brandNewBalance">United
+                                            Airlines</label>
+                                    </div>
+                                    <small>630</small>
+                                </div>
+                                <div
+                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="brandNike">
+                                        <label class="custom-control-label" for="brandNike">Major
+                                            Airline</label>
+                                    </div>
+                                    <small>58</small>
+                                </div>
+                                <div
+                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3 pb-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="brandFredPerry">
+                                        <label class="custom-control-label"
+                                            for="brandFredPerry">Alitalia</label>
+                                    </div>
+                                    <small>29</small>
+                                </div>
+                                <div
+                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3 pb-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="brandPerry">
+                                        <label class="custom-control-label" for="brandPerry">Air
+                                            France</label>
+                                    </div>
+                                    <small>58</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                aria-expanded="false" aria-controls="collapseFour">
+                                <span class="font-weight-bold font-size-17 text-dark mb-3">Flight
+                                    Type</span>
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse show"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div
+                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="brandhotel">
+                                        <label class="custom-control-label"
+                                            for="brandhotel">Business</label>
+                                    </div>
+                                    <small>749</small>
+                                </div>
+                                <div
+                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="brandapartmet">
+                                        <label class="custom-control-label" for="brandapartmet">First
+                                            Class</label>
+                                    </div>
+                                    <small>630</small>
+                                </div>
+                                <div
+                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="brandbed">
+                                        <label class="custom-control-label"
+                                            for="brandbed">Economy</label>
+                                    </div>
+                                    <small>58</small>
+                                </div>
+                                <div
+                                    class="form-group d-flex align-items-center justify-content-between font-size-1 text-lh-md text-gray-1 mb-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="brandresorts">
+                                        <label class="custom-control-label" for="brandresorts">Premium
+                                            Economy</label>
+                                    </div>
+                                    <small>29</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class=" col-sm-12 col-md-12 col-lg-9  col-xl-9  ">
+        
+                <div class="container">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6 col-lg-4 my-md-3 my-sm-3">
+                        <div class="card">
+                            <div class="position-relative rounded">
+                            <img src="https://i.ibb.co/5KSTjGV/hotel1.png" class="card-img-top " alt="">
+                        </div>
+                            <div class="d-flex position-absolute top-50">
+                                <i class="fa-solid fa-2x fa-location-dot mx-2" style="color: #fff;"></i>
+                                <p class="text-white fw-bold mt-1">Thailand</p>
+                            </div>
+                            
+                                <div class="discount-circle position-absolute top-50 end-0 bottom-0 me-2">
+                                    <p class=" fw-bold mb-0 text-white">50%</p>
+                               
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Kantua hotel, Thailand</h5>
+                                <p class="card-text"><span class="text-primary">4.8/5 Excellent</span> (1214 reviews)</p>
+                                <p><span class="fw-bold fs-4 text-black">$99.00</span> Price starts from</p>
+                            </div>
+                        </div>
+                        
+                      </div>
+                      <div class="col-sm-12 col-md-6 col-lg-4 my-md-3 my-sm-3">
+                        <div class="card" >
+                            <img src="https://i.ibb.co/m9mSkMD/hotel2.png" class="card-img-top position-relative" alt="">
+                            <div class="position-absolute top-50 d-flex">
+                                <i class="fa-solid fa-2x fa-location-dot mx-2 " style="color: #fff;"></i>
+                                <p class="text-white fw-bold mt-1">Thailand</p>
+                              </div>
+                            <div class="card-body">
+                               <h5 class="card-title">Kantua hotel, Thailand</h5>
+                               <p class="card-text"><span class="text-primary">4.8/5 Excellent</span> (1214 reviewes)</p>
+                               <p ><span class="fw-bold fs-4 text-black">$99.00</span> Price starts from</p>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-sm-12 col-md-6 col-lg-4 my-md-3 my-sm-3">
+                        <div class="card" >
+                            <img src="https://i.ibb.co/m9mSkMD/hotel2.png" class="card-img-top position-relative" alt="">
+                            <div class="position-absolute top-50 d-flex">
+                                <i class="fa-solid fa-2x fa-location-dot mx-2 " style="color: #fff;"></i>
+                                <p class="text-white fw-bold mt-1">Thailand</p>
+                              </div>
+                            <div class="card-body">
+                               <h5 class="card-title">Kantua hotel, Thailand</h5>
+                               <p class="card-text"><span class="text-primary">4.8/5 Excellent</span> (1214 reviewes)</p>
+                               <p ><span class="fw-bold fs-4 text-black">$99.00</span> Price starts from</p>
+                            </div>
+                         </div>
+                      </div>
+                         </div>
+                      </div>
+                    </div>
+                  </div>
+  
+            
+    </div>
+</div>
+
+
+{% endblock %}

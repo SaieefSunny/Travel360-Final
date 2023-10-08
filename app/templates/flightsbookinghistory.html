@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}Flights Booking History{% endblock %}
+{% block base %}
+{% block header %}Flights Booking History{% endblock %}
+<div class="row justify-content-md-between mb-4 mb-xl-0 mt-4">
+   
+    <div class="col-xl-2 col-lg-4 col-md-6 col-12">
+        
+        <div class="mb-lg-4 mb-2">
+            <input type="search" class="form-control" placeholder="Search by booking history">
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    
+    <div class="col-12">
+       
+        <div class="card">
+            
+            <div class="table-responsive">
+                <table class="table mb-0 text-nowrap table-centered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Name</th>
+                            <th>Airlines</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Date Time</th>
+                            <th>Price</th>
+                            <th>Commission</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                
+                                    <div class="ms-3">
+                                        <h4 class="mb-0 fs-5"><a href="#!" class="text-inherit">012</a></h4>
+                                    </div>
+                                
+                            </td>
+                            <td>
+                                Saif Sunny
+                            </td>
+                            <td>
+                                United Airlines
+                            </td>
+                            <td>
+                               USA
+                            </td>
+                            <td>
+                                Dhaka
+                            </td>
+                            <td>
+                                09-30-2023 10.00 am
+                            </td>
+                            <td>
+                                $500.00
+                            </td>
+                            <td>
+                                $2.00
+                            </td>
+                            <td>
+                                <span class="badge badge-success-soft p-2">Complete</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                
+                                    <div class="ms-3">
+                                        <h4 class="mb-0 fs-5"><a href="#!" class="text-inherit">012</a></h4>
+                                    </div>
+                                
+                            </td>
+                            <td>
+                                Saif Sunny
+                            </td>
+                            <td>
+                                United Airlines
+                            </td>
+                            <td>
+                               USA
+                            </td>
+                            <td>
+                                Dhaka
+                            </td>
+                            <td>
+                                09-30-2023 10.00 am
+                            </td>
+                            <td>
+                                $500.00
+                            </td>
+                            <td>
+                                $2.00
+                            </td>
+                            <td>
+                                <span class="badge badge-danger-soft p-2">Cancelled</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                
+                                    <div class="ms-3">
+                                        <h4 class="mb-0 fs-5"><a href="#!" class="text-inherit">012</a></h4>
+                                    </div>
+                                
+                            </td>
+                            <td>
+                                Saif Sunny
+                            </td>
+                            <td>
+                                United Airlines
+                            </td>
+                            <td>
+                               USA
+                            </td>
+                            <td>
+                                Dhaka
+                            </td>
+                            <td>
+                                09-30-2023 10.00 am
+                            </td>
+                            <td>
+                                $500.00
+                            </td>
+                            <td>
+                                $2.00
+                            </td>
+                            <td>
+                                <span class="badge badge-warning-soft p-2">Pending</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Add Customers{% endblock %}
+{% block base %}
+{% block header %}Add Customers Information{% endblock %}
+<div class="row my-2 ">
+    <div class="col-xl-2 col-lg-2 "></div>
+    <div class="col-xl-8 col-lg-8 col-md-12 col-12">
+        <!-- card -->
+        <div class="card">
+            <!-- card body -->
+            <div class="card-body my-2 mx-4">
+
+                <div class="row align-items-center mb-2">
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <h5 class="mb-0">Avatar</h5>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="d-flex align-items-center mb-4">
+                            <div>
+                                <img class="image  avatar avatar-lg rounded-circle"
+                                    src="https://i.ibb.co/P63D45j/face2.jpg" alt="Image">
+                            </div>
+
+                            <div class="file-upload btn btn-outline-white ms-4">
+                                <input type="file" class="file-input opacity-0">Upload Photo
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <form>
+                        <div class="mb-3 row">
+                            <label for="fullName" class="col-sm-4 col-form-label
+                    form-label">Full name</label>
+                            <div class="col-sm-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" placeholder="First name" id="fullName" required>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" placeholder="Last name" id="lastName" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="dob" class="col-sm-4 col-form-label
+                    form-label">Date of Birth</label>
+                            <div class="col-md-8 col-12">
+                                <input type="date" class="form-control"  id="dob" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="email" class="col-sm-4 col-form-label
+                    form-label">Email</label>
+                            <div class="col-md-8 col-12">
+                                <input type="email" class="form-control" placeholder="Email" id="email" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label for="phone" class="col-sm-4 col-form-label
+                    form-label">Phone </label>
+                            <div class="col-md-8 col-12">
+                                <input type="text" class="form-control" placeholder="Phone" id="phone" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="gender" class="col-sm-4 col-form-label
+                                form-label">Gender</label>
+
+                            <div class="col-md-8 col-12">
+                                <select class="form-select" id="gender">
+                                    <option selected>Male</option>
+                                    <option value="1">Female</option>
+                                    <option value="2">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="address" class="col-sm-4 col-form-label
+                    form-label">Address</label>
+
+
+                            <div class="col-md-8 col-12">
+                                <input type="text" class="form-control" placeholder="586 Wyman Village" id="address"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label for="zip" class="col-sm-4
+                    col-form-label form-label">Zip Code</label>
+                            <div class="col-md-8 col-12">
+                                <input type="text" class="form-control" placeholder="12345" id="zip"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="passport" class="col-sm-4 col-form-label
+                    form-label">Passport Numbers</label>
+                            <div class="col-md-8 col-12">
+                                <input type="text" class="form-control" placeholder="Btc0123" id="passport" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="expassport" class="col-sm-4 col-form-label
+                    form-label">Expired Passport Date</label>
+                            <div class="col-md-8 col-12">
+                                <input type="date" class="form-control"  id="expassport" required>
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <label for="nid" class="col-sm-4 col-form-label
+                    form-label">National ID </label>
+
+                            <div class="col-md-8 col-12">
+                                <input type="text" class="form-control" placeholder="0123456789" id="nid" required>
+                            </div>
+                            <div class="offset-md-4 col-md-8 mt-4">
+                                <button type="submit" class="btn btn-primary"> Save
+                                    Information </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xl-2 col-lg-2 "></div>
+</div>
+{% endblock %}
