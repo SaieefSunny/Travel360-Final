@@ -91,7 +91,8 @@
                                                                         <button class="dropdown-toggle final-count"
                                                                             data-toggle="dropdown" type="button"
                                                                             id="dropdownMenuButton1"
-                                                                            data-bs-toggle="dropdown" name="total_passenger"
+                                                                            data-bs-toggle="dropdown"
+                                                                            name="total_passenger"
                                                                             aria-expanded="false">
                                                                             1 Passenger
                                                                         </button>
@@ -104,7 +105,9 @@
                                                                                         <div class="passengers-type">
                                                                                             <div class="text">
                                                                                                 <input
-                                                                                                    class="count pcount" name="adult" value="1">
+                                                                                                    class="count pcount"
+                                                                                                    name="adult"
+                                                                                                    value="1">
                                                                                                 <div class="type-label">
                                                                                                     <p>Adult
                                                                                                     </p>
@@ -128,7 +131,9 @@
                                                                                         <div class="passengers-type">
                                                                                             <div class="text">
                                                                                                 <input
-                                                                                                    class="count ccount" name="child" value="0">
+                                                                                                    class="count ccount"
+                                                                                                    name="child"
+                                                                                                    value="0">
                                                                                                 <div class="type-label">
                                                                                                     <p
                                                                                                         class="fz14 mb-xs-0">
@@ -158,7 +163,9 @@
                                                                                         <div class="passengers-type">
                                                                                             <div class="text">
                                                                                                 <input
-                                                                                                    class="count incount" name="infant" value="0">
+                                                                                                    class="count incount"
+                                                                                                    name="infant"
+                                                                                                    value="0">
                                                                                                 <div class="type-label">
                                                                                                     <p
                                                                                                         class="fz14 mb-xs-0">
@@ -213,7 +220,9 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <input class="m-0 p-0" id="selected-cabin" name="select_cabin" value="Economy" style="font-size: 12px;">
+                                                                    <input class="m-0 p-0" id="selected-cabin"
+                                                                        name="select_cabin" value="Economy"
+                                                                        style="font-size: 12px;">
                                                                 </div>
                                                             </div>
                                                             <div class="top_form_search_button">
@@ -987,8 +996,8 @@
                                                     <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input"
                                                             id="brandhotel">
-                                                        <label class="custom-control-label"
-                                                            for="brandhotel">{{ get_cabin_name(cabin_code) }}</label>
+                                                        <label class="custom-control-label" for="brandhotel">{{
+                                                            get_cabin_name(cabin_code) }}</label>
                                                     </div>
                                                     <small>{{ frequency }}</small>
                                                 </div>
@@ -1139,8 +1148,7 @@
                             <div class="row align-items-center text-center">
                                 <div class="col-md mb-4 mb-md-0">
                                     <img class="img-fluid" src="../static/img/90x90/img4.png" alt="Image-Description">
-                                    <p>{{get_airline_name(itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['airlineCode'])
-                                        }}</p>
+                                    <p>{{get_airline_name(itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['airlineCode'])}}</p>
                                 </div>
                                 <div class="col-md mb-4 mb-md-0">
 
@@ -1152,13 +1160,10 @@
                                         </div>
                                         <div class="text-lg-left">
                                             <h6 class="font-weight-bold font-size-21 text-gray-5 mb-0">
-                                                {{
-                                                convert_and_format_time(first_schedule['ref']['departure']['time'])
-                                                }}</h6>
+                                                {{ convert_and_format_time(first_schedule['ref']['departure']['time']) }}</h6>
                                             <span class="font-size-14 text-gray-1">{{
                                                 get_city_name(first_schedule['ref']['departure']['city']) }},
-                                                {{ get_country_name(first_schedule['ref']['departure']['country'])
-                                                }}</span>
+                                                {{ get_country_name(first_schedule['ref']['departure']['country'])}}</span>
                                         </div>
                                     </div>
                                     {% endfor %}
@@ -1213,11 +1218,34 @@
                                                     {% endfor %}
                                                 </div>
 
+                                                {% for leg in itinerary['legs'] %}
+                                                {% set first_schedule = leg['ref']['schedules'][0] %}
+                                                {% set dep=first_schedule['ref']['departure']['time'] %}
+                                                {% set parts = dep.split("+") %}
+                                                {% set dep_datetime = itinerary['DepartureDateTime'] + "T" +parts[0]%}
 
-                                                <a href="{{ url_for('views.flightitinerary', OriginLocation='DAC', DestinationLocation='JFK', DepartureDateTime='2023-10-15T01:40:00',
-                                                ArrivalDateTime='2023-10-15T04:30:00', Airline='EK',  Number='585', ClassOfService='V', SeatsRequested='1', passengerCode='ADT') }}"
+                                                {% set total_time = leg['ref']['elapsedTime'] %}
+
+                                                {% set departure_datetime = datetime.strptime(dep_datetime,
+                                                "%Y-%m-%dT%H:%M:%S") %}
+                                                {% set arrival_datetime = departure_datetime +
+                                                timedelta(minutes=total_time) %}
+                                                {% set arrival_datetime =
+                                                arrival_datetime.strftime("%Y-%m-%dT%H:%M:%S")%}
+                                                <h1></h1>
+                                                <a href="{{ url_for('views.flightitinerary', 
+                                                Origin=itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['beginAirport'], 
+                                                Destination=itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['endAirport'], 
+                                                DepartureDateTime=dep_datetime,
+                                                ArrivalDateTime=arrival_datetime, 
+                                                
+                                                Airline=itinerary['legs'][0]['ref']['schedules'][0]['ref']['carrier']['operating'],  
+                                                Number=itinerary['legs'][0]['ref']['schedules'][0]['ref']['carrier']['operatingFlightNumber'], 
+                                                SeatsRequested=total_passenger) }}"
                                                     class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100">Book
                                                     Now</a>
+                                                {% endfor %}
+
                                             </div>
                                             <!-- On Target Modal -->
                                             <a class="font-size-14 text-gray-1 d-block" data-bs-toggle="collapse"
@@ -1256,7 +1284,18 @@
                                             <div class="row text-center">
                                                 <div class="col-lg-5 col-sm-5" style="vertical-align:center;">
                                                     <p class=" m-0">{{format_date(departure_date)}}</p>
-                                                    <h5 class=" mb-0"> <span class="fw-bold" style="font-size: 22px;">{{convert_and_format_time(schedule['ref']['departure']['time'])}}</span>
+                                                    {% set first_schedule = leg['ref']['schedules'][0] %}
+                                                    {% set dep=first_schedule['ref']['departure']['time'] %}
+                                                    {% set parts = dep.split("+") %}
+                                                    {% set dep_datetime = itinerary['DepartureDateTime'] + "T" +parts[0]%}
+
+                                                    {% set total_time = leg['ref']['elapsedTime'] %}
+
+                                                    {% set departure_datetime = datetime.strptime(dep_datetime, "%Y-%m-%dT%H:%M:%S") %}
+                                                    {% set arrival_datetime = departure_datetime + timedelta(minutes=total_time) %}
+                                                    {% set arrival_date = arrival_datetime.strftime("%Y-%m-%d")%}
+                                                    <h5 class=" mb-0"> <span class="fw-bold"
+                                                            style="font-size: 22px;">{{convert_and_format_time(schedule['ref']['departure']['time'])}}</span>
                                                     </h5>
                                                     <p>{{get_airport_name(schedule['ref']['departure']['airport'])}}
                                                     </p>
@@ -1271,9 +1310,10 @@
                                                 </div>
 
                                                 <div class="col-lg-5 ">
-                                                    <p class="fw-bold m-1">[NOT FOUND in API]</p>
+                                                    <p class=" m-1">{{format_date(arrival_date)}}</p>
                                                     <h5 class=" mb-0"><span class="fw-bold"
                                                             style="font-size: 22px;">{{convert_and_format_time(schedule['ref']['arrival']['time'])}}</span>
+
                                                     </h5>
                                                     <p>{{get_airport_name(schedule['ref']['arrival']['airport'])}}
                                                     </p>

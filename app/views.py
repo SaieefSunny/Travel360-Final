@@ -39,7 +39,6 @@ def get_airport_suggestions():
     print(airport_suggestions)
     return jsonify({'airports': airport_suggestions})
 
-
 def convert_and_format_time(raw_time):
     user_timezone_offset =6
     
@@ -134,19 +133,6 @@ def get_cabin_name(cabin_code):
 
 
 
-key = Fernet.generate_key()
-
-def encrypt(text):
-    cipher_suite = Fernet(key)
-    encrypted_text = cipher_suite.encrypt(text.encode())
-    return encrypted_text
-
-def decrypt(encrypted_text):
-    cipher_suite = Fernet(key)
-    decrypted_text = cipher_suite.decrypt(encrypted_text)
-    return decrypted_text.decode()
-
-
 @views.route('/')
 @login_required
 def home():
@@ -179,18 +165,54 @@ def flights():
         iata_from = request.form.get('iataFrom')
         iata_to = request.form.get('iataTo')
         journey_date = request.form.get('journey_date')
-        adult = request.form.get('adult')
-        child = request.form.get('child')
-        infant = request.form.get('infant')
-        cabin = request.form.get('select_cabin')
-
-        print( adult, child, infant, cabin)
+        
+        adult = int(request.form.get('adult'))
+        child = int(request.form.get('child'))
+        infant = int(request.form.get('infant'))
+        total_passenger = int(adult+child+infant)
+        
+        cab = request.form.get('select_cabin')
+        if cab == "Economy":
+            cabin= "Y"
+        elif cab == "Business":
+            cabin="C"
+        elif cab == "First Class":
+            cabin="F"
+            
         sabre_api_url = f'https://api.cert.platform.sabre.com/v4/offers/shop'
 
         headers = {
             "Authorization": f"Bearer T1RLAQJl7PCx+uMQW4bTBqGf3quNgeakNF5yZLQApxWMsbqqkRB5YZDJs8L3gvh4klQQ78VyAADgpra6XonPFWIBBBf23IG7pMF3OrOhEwnlkLg3GUiDsNrw4KeRkgpai/kFp+wDBPkwzge9pHlFn2DDd7eDrZ7HCR6E27NA5lItrZwsFZvQsv02YTeMfW64rYpWiB2sss7PQSo5s1up63qojb+DeWF3lYIEc6TEKC04W1qSf18V/T5g6NmmFh4WTxIG0vpLTLJsGbU+5fVOT0ZuZ/wgqw+impb5kjBj+kkQf4RRr3saLbCnn2lUjMZrIuJNEgjTDsnIY6ceHZ5GRp2aRIaHo6AoflpDOkAjHqKfQYtkxHcUHq8*"
         }
+        
+        # Initialize an empty list to store passenger data
+        passenger_data = []
 
+        for _ in range(adult):
+            passenger = {
+                "Code": "ADT",  
+                "Quantity": 1 
+            }
+            passenger_data.append(passenger)
+    
+    
+        for _ in range(child):
+            passenger = {
+                "Code": "C07",  
+                "Quantity": 1 
+            }
+            passenger_data.append(passenger)
+    
+
+        for _ in range(infant):
+            passenger = {
+                "Code": "INY",  
+                "Quantity": 1 
+            }
+            passenger_data.append(passenger)
+            
+        #print(passenger_data)
+        
         request_body = {
             "OTA_AirLowFareSearchRQ": {
                 "ResponseType": "GIR",
@@ -225,12 +247,7 @@ def flights():
                 "TravelerInfoSummary": {
                     "AirTravelerAvail": [
                         {
-                            "PassengerTypeQuantity": [
-                                {
-                                    "Code": "ADT",
-                                    "Quantity": 1
-                                }
-                            ]
+                            "PassengerTypeQuantity": passenger_data
                         }
                     ]
                 },
@@ -299,7 +316,7 @@ def flights():
 
                     
                     leg["stops"] = stops
-                    itinerary["stops"] = stops
+                    itinerary["DepartureDateTime"] = response_data["groupedItineraryResponse"]["itineraryGroups"][0]["groupDescription"]["legDescriptions"][0]["departureDate"]
                     
                     for pricing_info in itinerary["pricingInformation"]:
                         passenger_info = pricing_info["fare"]["passengerInfoList"][0]["passengerInfo"]
@@ -345,7 +362,7 @@ def flights():
 
 
 
-            return render_template('flights.html', itineraries=itineraries, statistics= statistics["itineraryCount"], departure_date=departure_date, timedelta=timedelta,
+            return render_template('flights.html', itineraries=itineraries, statistics= statistics["itineraryCount"], departure_date=departure_date, timedelta=timedelta,datetime=datetime,
                                 convert_and_format_time=convert_and_format_time,
                                 get_airport_name=get_airport_name,
                                 get_city_name=get_city_name,
@@ -355,8 +372,8 @@ def flights():
                                 get_airline_name=get_airline_name,
                                 get_cabin_name=get_cabin_name,
                                 airline_frequencies=airline_frequencies,
-                                cabin_code_frequencies=cabin_code_frequencies,
-                                encrypt=encrypt, decrypt=decrypt
+                                cabin_code_frequencies=cabin_code_frequencies, 
+                                total_passenger=total_passenger
                                 )
 
         except Exception as e:
@@ -388,9 +405,236 @@ def flightshistory():
 @login_required
 def flightitinerary():
 
-    flight = request.args.get('flight')
+    Origin = request.args.get('Origin')
+    Destination = request.args.get('Destination')
+    DepartureDateTime = request.args.get('OrDepartureDateTimeigin')
+    ArrivalDateTime = request.args.get('ArrivalDateTime')
+    Airline = request.args.get('Airline')
+    Number = request.args.get('Number')
+    SeatsRequested = request.args.get('SeatsRequested')
     
+    sabre_api_url = f'https://api.cert.platform.sabre.com/v4/shop/flights/revalidate'
 
+    headers = {
+        "Authorization": f"Bearer T1RLAQJl7PCx+uMQW4bTBqGf3quNgeakNF5yZLQApxWMsbqqkRB5YZDJs8L3gvh4klQQ78VyAADgpra6XonPFWIBBBf23IG7pMF3OrOhEwnlkLg3GUiDsNrw4KeRkgpai/kFp+wDBPkwzge9pHlFn2DDd7eDrZ7HCR6E27NA5lItrZwsFZvQsv02YTeMfW64rYpWiB2sss7PQSo5s1up63qojb+DeWF3lYIEc6TEKC04W1qSf18V/T5g6NmmFh4WTxIG0vpLTLJsGbU+5fVOT0ZuZ/wgqw+impb5kjBj+kkQf4RRr3saLbCnn2lUjMZrIuJNEgjTDsnIY6ceHZ5GRp2aRIaHo6AoflpDOkAjHqKfQYtkxHcUHq8*"
+    }
+    
+    request_body = {
+        "OTA_AirLowFareSearchRQ":{
+            "POS":{
+                "Source":[
+                    {
+                    "PseudoCityCode":"40OK",
+                    "RequestorID":{
+                        "Type":"1",
+                        "ID":"1",
+                        "CompanyName":{
+                            "Code":"TN"
+                        }
+                    }
+                    }
+                ]
+            },
+            "OriginDestinationInformation":[
+                {
+                    "RPH":"1",
+                    "DepartureDateTime":"2023-10-15T01:40:00",
+                    "OriginLocation":{
+                    "LocationCode":Origin
+                    },
+                    "DestinationLocation":{
+                    "LocationCode":Destination
+                    },
+                    "TPA_Extensions":{
+                    "Flight":[
+                        {
+                            "Number":585,
+                            "ClassOfService":"V",
+                            "DepartureDateTime":"2023-10-15T01:40:00",
+                            "ArrivalDateTime":"2023-10-15T04:30:00",
+                            "Type":"A",
+                            "OriginLocation":{
+                                "LocationCode":Origin
+                            },
+                            "DestinationLocation":{
+                                "LocationCode":Destination
+                            },
+                            "Airline":{
+                                "Operating":"EK",
+                                "Marketing":"EK"
+                            }
+                        }
+                    ]
+                    }
+                }
+            ],
+            "TPA_Extensions":{
+                "IntelliSellTransaction":{
+                    "CompressResponse":{
+                    "Value":False
+                    },
+                    "RequestType":{
+                    "Name":"50ITINS"
+                    }
+                }
+            },
+            "TravelerInfoSummary":{
+                "AirTravelerAvail":[
+                    {
+                    "PassengerTypeQuantity":[
+                        {
+                            "Code":"ADT",
+                            "Quantity":1,
+                            "TPA_Extensions":{
+                                "VoluntaryChanges":{
+                                "Match":"Info"
+                                }
+                            }
+                        }
+                    ]
+                    }
+                ],
+                "SeatsRequested":[
+                    1
+                ]
+            },
+            "TravelPreferences":{
+                "TPA_Extensions":{
+                    "DataSources":{
+                    "NDC":"Disable",
+                    "ATPCO":"Enable",
+                    "LCC":"Disable"
+                    },
+                    "VerificationItinCallLogic":{
+                    "AlwaysCheckAvailability":True,
+                    "Value":"L"
+                    }
+                }
+            },
+            "Version":"4"
+        }
+    }
+    
+    
+    try:
+
+            response = requests.post(sabre_api_url, headers=headers, json=request_body)
+            response.raise_for_status()
+
+            response_data = response.json()
+
+            messages = response_data["groupedItineraryResponse"]["messages"]
+            statistics = response_data["groupedItineraryResponse"]["statistics"]
+            schedule_descs = response_data["groupedItineraryResponse"]["scheduleDescs"]
+            tax_descs = response_data["groupedItineraryResponse"]["taxDescs"]
+            tax_summary_descs = response_data["groupedItineraryResponse"]["taxSummaryDescs"]
+            fare_component_descs = response_data["groupedItineraryResponse"]["fareComponentDescs"]
+            baggage_allowance_descs = response_data["groupedItineraryResponse"]["baggageAllowanceDescs"]
+            leg_descs = response_data["groupedItineraryResponse"]["legDescs"]
+            itinerary_groups = response_data["groupedItineraryResponse"]["itineraryGroups"]
+
+            departure_date = response_data["groupedItineraryResponse"]["itineraryGroups"][0]["groupDescription"]["legDescriptions"][0]["departureDate"]
+            itineraries = [group["itineraries"] for group in itinerary_groups]
+            leg_mapping = {leg_desc["id"]: leg_desc for leg_desc in leg_descs}
+            tax_mapping = {tax_desc["id"]: tax_desc for tax_desc in tax_descs}
+            tax_summary_mapping = {tax_summary_desc["id"]: tax_summary_desc for tax_summary_desc in tax_summary_descs}
+            schedule_mapping = {schedule_desc["id"]: schedule_desc for schedule_desc in schedule_descs}
+            baggage_allowance_mapping = {allowance_desc["id"]: allowance_desc for allowance_desc in baggage_allowance_descs}
+
+            for itinerary_group in itineraries:
+                for itinerary in itinerary_group:
+                    
+                    for leg in itinerary["legs"]:
+                        
+                        ref = leg["ref"]                    
+                        leg_desc = leg_mapping.get(ref)
+                        if leg_desc:
+                            leg["ref"] = leg_desc
+
+                        for schedule_ref in leg["ref"]["schedules"]:
+                            schedule_desc = schedule_mapping.get(schedule_ref["ref"])
+                            if schedule_desc:
+                                schedule_ref["ref"] = schedule_desc
+                    
+                    for pricing_info in itinerary["pricingInformation"]:
+                        taxes = pricing_info["fare"]["passengerInfoList"][0]["passengerInfo"]["taxes"]
+                        updated_taxes = [tax_mapping[tax["ref"]] for tax in taxes]
+                        pricing_info["fare"]["passengerInfoList"][0]["passengerInfo"]["taxes"] = updated_taxes
+
+                    for pricing_info in itinerary["pricingInformation"]:
+                        tax_summaries = pricing_info["fare"]["passengerInfoList"][0]["passengerInfo"]["taxSummaries"]
+                        updated_tax_summaries = [tax_summary_mapping[tax_summary["ref"]] for tax_summary in tax_summaries]
+                        pricing_info["fare"]["passengerInfoList"][0]["passengerInfo"]["taxSummaries"] = updated_tax_summaries
+
+                    stops = sum([len(leg["ref"]["schedules"]) - 1 for leg in itinerary["legs"]])
+
+                    
+                    leg["stops"] = stops
+                    itinerary["DepartureDateTime"] = response_data["groupedItineraryResponse"]["itineraryGroups"][0]["groupDescription"]["legDescriptions"][0]["departureDate"]
+                    
+                    for pricing_info in itinerary["pricingInformation"]:
+                        passenger_info = pricing_info["fare"]["passengerInfoList"][0]["passengerInfo"]
+                        baggage_info = passenger_info.get("baggageInformation")
+
+                        if baggage_info:
+                            updated_baggage_info = []
+
+                            for baggage_item in baggage_info:
+                                allowance_ref = baggage_item.get("allowance", {}).get("ref")
+                                allowance_desc = baggage_allowance_mapping.get(allowance_ref)
+
+                                if allowance_desc:
+                                    baggage_item["allowance"] = allowance_desc
+                                    updated_baggage_info.append(baggage_item)
+
+                            passenger_info["baggageInformation"] = updated_baggage_info
+            
+            #print("Updated Itineraries:", itineraries)
+            
+            airline_frequencies = defaultdict(int)
+            for group in itinerary_groups:
+                for itinerary in group['itineraries']:
+                    for pricing_info in itinerary['pricingInformation']:
+                        if 'baggageInformation' in pricing_info['fare']['passengerInfoList'][0]['passengerInfo']:
+                            airline_code = pricing_info['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['airlineCode']
+                            airline_frequencies[airline_code] += 1
+            
+            
+            cabin_code_frequencies = defaultdict(int)
+
+            for group in itinerary_groups:
+                for itinerary in group['itineraries']:
+                    counted_cabin = False
+                    for pricing_info in itinerary['pricingInformation']:
+                        for passenger_info in pricing_info['fare']['passengerInfoList']:
+                            for fare_component in passenger_info['passengerInfo']['fareComponents']:
+                                for segment in fare_component['segments']:
+                                    cabin_code = segment['segment']['cabinCode']
+                                    if not counted_cabin:
+                                        cabin_code_frequencies[cabin_code] += 1
+                                        counted_cabin = True
+
+
+
+            return render_template('flightitinerary.html', itineraries=itineraries, statistics= statistics["itineraryCount"], departure_date=departure_date, timedelta=timedelta,datetime=datetime,
+                                convert_and_format_time=convert_and_format_time,
+                                get_airport_name=get_airport_name,
+                                get_city_name=get_city_name,
+                                get_country_name=get_country_name,
+                                format_date=format_date,
+                                convert_duration=convert_duration,
+                                get_airline_name=get_airline_name,
+                                get_cabin_name=get_cabin_name,
+                                airline_frequencies=airline_frequencies,
+                                cabin_code_frequencies=cabin_code_frequencies,
+                                encrypt=encrypt, decrypt=decrypt
+                                )
+
+    except Exception as e:
+        error_message = str(e)
+        print(f"Error: {error_message}")
+
+    
     return render_template("flightitinerary.html", user=current_user)
 
 

@@ -2,39 +2,43 @@
 base %} {% block header %}All Customers Information{% endblock %}
 
 <div class="row mx-2">
-  <div class="col-lg-8 col-xl-8 col-md-12 col-sm-12">
-    <div
-      class="card mt-4 mb-1"
-      style="background-color: #e1e7ee; border-radius: 13px"
-    >
+
+
+  <div class="col-lg-9 col-xl-9 col-md-12 col-sm-12">
+    {% for group in itineraries %}
+    {% for itinerary in group %}
+    <div class="card mt-4 mb-1" style="background-color: #e1e7ee; border-radius: 13px">
       <div class="row mt-4 ms-2 p-2">
         <div class="col-4">
           <div class="d-flex">
             <div>
-              <img
-                src="https://i.ibb.co/DQZm0dz/img1.png"
-                alt=""
-                class="rounded w-80 h-80"
-              />
+              <img src="https://i.ibb.co/DQZm0dz/img1.png" alt="" class="rounded w-80 h-80" />
             </div>
             <div class="text-left">
-              <p class="fw-bold m-0 ps-1" style="color: #4159e1">Emirates</p>
-              <p class="ps-1">EK 583 | Cabin Class: Q</p>
+              <p class="fw-bold m-0 ps-1" style="color: #4159e1">
+                {{get_airline_name(itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['airlineCode'])
+                }}</p>
+              <p class="ps-1">
+                {{itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['airlineCode']
+                }} {{itinerary['legs'][0]['ref']['schedules'][0]['ref']['carrier']['operatingFlightNumber']}} | Cabin
+                Class: Q</p>
             </div>
           </div>
         </div>
 
         <div class="col-8 text-right pe-lg-10 pt-3">
-          <p
-            class="text-black end-100"
-            style="
+          <p class="text-black end-100" style="
               font-size: 16px;
               font-style: normal;
-              font-weight: 500;
+              font-weight: 700;
               line-height: 24px;
-            "
-          >
+            ">
+            {% if itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['nonRefundable']
+            == True %}
             Non Refundable
+            {% else %}
+            Refundable
+            {% endif %}
           </p>
         </div>
       </div>
@@ -42,49 +46,54 @@ base %} {% block header %}All Customers Information{% endblock %}
         <div class="row text-center">
           <div class="col-3">
             <p>Depart</p>
-            <h5 class="fw-bold fs-3">20:15</h5>
-            <p class="text-black">4 October 2023</p>
-            <p>Soekarno-Hatta Airport</p>
+            <h5 class="fw-bold fs-3">
+              {{convert_and_format_time(itinerary['legs'][0]['ref']['schedules'][0]['ref']['departure']['time'])}}</h5>
+            <p class="text-black">{{format_date(itinerary['DepartureDateTime'])}}</p>
+            <p>{{get_airport_name(itinerary['legs'][0]['ref']['schedules'][0]['ref']['departure']['airport'])}}</p>
           </div>
           <div class="col-6">
             <div class="pt-4">
               <p>Duration</p>
             </div>
             <div class="position-relative m-4">
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Progress"
-                aria-valuenow="50"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="height: 1px"
-              >
+              <div class="progress" role="progressbar" aria-label="Progress" aria-valuenow="50" aria-valuemin="0"
+                aria-valuemax="100" style="height: 1px">
                 <div class="progress-bar" style="width: 100%"></div>
               </div>
-              <button
-                type="button"
+              <button type="button"
                 class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill"
-                style="width: 1rem; height: 1rem"
-              ></button>
-              <button
-                type="button"
-                class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill"
-              >
-                12 hr 30 min
+                style="width: 1rem; height: 1rem"></button>
+              <button type="button"
+                class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill">
+                {{ convert_duration(itinerary['legs'][0]['ref']['elapsedTime'])}}
               </button>
-              <button
-                type="button"
+              <button type="button"
                 class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-primary rounded-pill"
-                style="width: 1rem; height: 1rem"
-              ></button>
+                style="width: 1rem; height: 1rem"></button>
             </div>
           </div>
           <div class="col-3">
             <p>Depart</p>
-            <h6 class="fw-bold fs-3">20:15</h6>
-            <p class="text-black">4 October 2023</p>
-            <p>Soekarno-Hatta Airport</p>
+            {% for leg in itinerary['legs'] %}
+            {% set dep=leg['ref']['schedules'][0]['ref']['departure']['time'] %}
+            {% set parts = dep.split("+") %}
+            {% set dep_datetime = itinerary['DepartureDateTime'] + "T" +parts[0]%}
+            {% set total_time = leg['ref']['elapsedTime'] %}
+
+            {% set departure_datetime = datetime.strptime(dep_datetime,
+            "%Y-%m-%dT%H:%M:%S") %}
+            {% set arrival_datetime = departure_datetime +
+            timedelta(minutes=total_time) %}
+
+            {% set arrival_datetime =
+            arrival_datetime.strftime("%Y-%m-%dT%H:%M:%S")%}
+            {% set arr_parts = arrival_datetime.split("T") %}
+
+            <h6 class="fw-bold fs-3">{{convert_and_format_time(arr_parts[1]+"+"+parts[1])}}</h6>
+            <p class="text-black">{{format_date(arr_parts[0])}}</p>
+            <p>{{get_airport_name(itinerary['legs'][0]['ref']['schedules'][0]['ref']['arrival']['airport'])}}</p>
+            {% endfor %}
+
           </div>
         </div>
       </div>
@@ -104,110 +113,65 @@ base %} {% block header %}All Customers Information{% endblock %}
           </div>
           <div class="col-3">
             <div>
-              <p class="text-black text-right fs-4 fw-bold">Price $1000</p>
+              <h3 class="text-black text-right  fw-bold">{{
+                itinerary['pricingInformation'][0]['fare']['totalFare']['currency'] }} {{
+                itinerary['pricingInformation'][0]['fare']['totalFare']['totalPrice'] }}</h3>
             </div>
           </div>
         </div>
       </div>
     </div>
-  
+    {% endfor %}
+    {% endfor %}
+
     <div class="card my-4">
-      <!-- card body -->
-      <div class="card-body  mx-4">
+      <div class="card-body mx-4">
         <div>
           <div class="">
-            <h4 class="mb-1 fw-bold">Passenger Details</h4>
+            <h4 class="mb-1 fw-bold border-bottom mb-4 pb-2 pt-2">Passenger Details</h4>
           </div>
           <form>
             <div class="mb-3 row">
-              <label
-                for="selecttravelers"
-                class="col-sm-4 col-form-label form-label"
-                >Select Travelers</label
-              >
+              <label for="selecttravelers" class="col-sm-4 col-form-label form-label">Select Travelers</label>
               <div class="col-md-8 col-12">
-                <input
-                  type="email"
-                  class="form-control"
-                  placeholder="Select travelers from list"
-                  id="selecttravelers"
-                  required
-                />
+                <input type="text" class="form-control" placeholder="Select travelers from list" id="selecttravelers"
+                  required />
               </div>
             </div>
 
             <div class="mb-3 row">
-              <label for="fullName" class="col-sm-4 col-form-label form-label"
-                >Full name</label
-              >
+              <label for="fullName" class="col-sm-4 col-form-label form-label">Full name</label>
               <div class="col-sm-4 mb-3 mb-lg-0">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="First name"
-                  id="fullName"
-                  required
-                />
+                <input type="text" class="form-control" placeholder="First name" id="fullName" required />
               </div>
               <div class="col-sm-4">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Last name"
-                  id="lastName"
-                  required
-                />
+                <input type="text" class="form-control" placeholder="Last name" id="lastName" required />
               </div>
             </div>
 
             <div class="mb-3 row">
-              <label for="dob" class="col-sm-4 col-form-label form-label"
-                >Date Of Birth</label
-              >
+              <label for="dob" class="col-sm-4 col-form-label form-label">Date Of Birth</label>
               <div class="col-md-8 col-12">
-                <input
-                  type="date"
-                  class="form-control"
-                  placeholder="Date of birth"
-                  id="dob"
-                  required
-                />
+                <input type="date" class="form-control" placeholder="Date of birth" id="dob" required />
               </div>
             </div>
 
             <div class="mb-3 row">
-              <label for="email" class="col-sm-4 col-form-label form-label"
-                >Email</label
-              >
+              <label for="email" class="col-sm-4 col-form-label form-label">Email</label>
               <div class="col-md-8 col-12">
-                <input
-                  type="email"
-                  class="form-control"
-                  placeholder="Email"
-                  id="email"
-                  required
-                />
+                <input type="email" class="form-control" placeholder="Email" id="email" required />
               </div>
             </div>
 
             <div class="mb-3 row">
-              <label for="phone" class="col-sm-4 col-form-label form-label"
-                >Phone
+              <label for="phone" class="col-sm-4 col-form-label form-label">Phone
               </label>
               <div class="col-md-8 col-12">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Phone"
-                  id="phone"
-                  required
-                />
+                <input type="text" class="form-control" placeholder="Phone" id="phone" required />
               </div>
             </div>
             <div class="mb-3 row">
-              <label for="gender" class="col-sm-4 col-form-label form-label"
-                >Gender</label
-              >
+              <label for="gender" class="col-sm-4 col-form-label form-label">Gender</label>
 
               <div class="col-md-8 col-12">
                 <select class="form-select" id="gender">
@@ -218,133 +182,350 @@ base %} {% block header %}All Customers Information{% endblock %}
               </div>
             </div>
             <div class="mb-3 row">
-              <label for="address" class="col-sm-4 col-form-label form-label"
-                >Address</label
-              >
+              <label for="address" class="col-sm-4 col-form-label form-label">Address</label>
 
               <div class="col-md-4 col-12">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="586 Wyman Village"
-                  id="address"
-                  required
-                />
+                <input type="text" class="form-control" placeholder="586 Wyman Village" id="address" required />
               </div>
 
               <div class="col-md-2 col-12">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="city"
-                  id="city"
-                  required
-                />
+                <input type="text" class="form-control" placeholder="city" id="city" required />
               </div>
 
               <div class="col-md-2 col-12">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="state"
-                  id="state"
-                  required
-                />
+                <input type="text" class="form-control" placeholder="state" id="state" required />
               </div>
             </div>
 
             <div class="mb-3 row">
-              <label for="passportNo" class="col-sm-4 col-form-label form-label"
-                >Passport No.</label
-              >
+              <label for="passportNo" class="col-sm-4 col-form-label form-label">Passport No.</label>
               <div class="col-md-8 col-12">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Passport number"
-                  id="passportNo"
-                  required
-                />
+                <input type="text" class="form-control" placeholder="Passport number" id="passportNo" required />
               </div>
             </div>
 
             <div class="mb-3 row">
-              <label for="visaNo" class="col-sm-4 col-form-label form-label"
-                >Visa No.</label
-              >
+              <label for="visaNo" class="col-sm-4 col-form-label form-label">Visa No.</label>
               <div class="col-md-8 col-12">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Visa number"
-                  id="visaNo"
-                  required
-                />
+                <input type="text" class="form-control" placeholder="Visa number" id="visaNo" required />
               </div>
 
               <div class="offset-md-4 col-md-8 mt-4">
-                <button type="submit" class="btn btn-primary">
-                  Book Ticket
-                </button>
+                <a href="">
+                  <button type="submit" class="btn btn-primary">
+                    Book Ticket
+                  </button>
+                </a>
               </div>
             </div>
           </form>
         </div>
       </div>
     </div>
+
+
+
+    <!-- Passenger Details End -->
+
+    <!-- Payment information Start-->
+    <div class="card my-4">
+      <!-- card body -->
+      <div class="card-body mx-4">
+        <div>
+          <div class="">
+            <h4 class="mb-1 fw-bold">Payment Information</h4>
+          </div>
+
+          <div class="pt-4 pb-5 px-5">
+            <!-- Nav Classic -->
+            <ul class="nav nav-classic nav-choose border-0 nav-justified border mx-n3" id="pills-tab" role="tablist">
+              <li class="nav-item mx-3 mb-4 mb-md-0 active">
+                <a class="rounded py-5 border-width-2 border nav-link font-weight-medium active" id="pills-home-tab"
+                  data-bs-toggle="pill" href="#paymentone" role="tab" aria-controls="paymentone" aria-selected="true">
+                  <div class="d-md-flex justify-content-md-center align-items-md-center flex-wrap">
+                    <img class="img-fluid w-15 mb-3" src="https://i.ibb.co/NTWtsNn/al.png" alt="Image-Description" />
+                    <div class="w-100 text-dark">Payment with bank account</div>
+                  </div>
+                </a>
+              </li>
+              <li class="nav-item mx-3">
+                <a class="rounded py-5 border-width-2 border nav-link font-weight-medium" id="pills-profile-tab"
+                  data-bs-toggle="pill" href="#paymenttwo" role="tab" aria-controls="paymenttwo" aria-selected="false">
+                  <div class="height-25 width-25 position-absolute left-0 top-0 ml-2 mt-2"></div>
+                  <div class="d-md-flex justify-content-md-center align-items-md-center flex-wrap">
+                    <img class="img-fluid mb-3" src="https://i.ibb.co/pw4vnr9/img1.jpg" alt="Image-Description" />
+                    <div class="w-100 text-dark">Payment with credit card</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+            <!-- End Nav Classic -->
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="pills-tabContent">
+              <div class="tab-pane fade pt-8 show active" id="paymentone" role="tabpanel"
+                aria-labelledby="paymentone-tab">
+                <!-- Payment Form -->
+                <form class="js-validate">
+                  <div class="row">
+                    <div class="col-sm-12 mb-4">
+                      <div class="js-form-message">
+                        <label class="form-label"> Account Holder Name </label>
+
+                        <input type="text" class="form-control" name="Accountname" placeholder="" aria-label="" required
+                          data-msg="Please enter card holder name." data-error-class="u-has-error"
+                          data-success-class="u-has-success" />
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 mb-4">
+                      <div class="row">
+                        <div class="col-sm-12 mb-4 mb-md-0">
+                          <div class="js-form-message">
+                            <label class="form-label"> Account Number </label>
+
+                            <input type="number" class="form-control" name="accountNumber" placeholder="" aria-label=""
+                              required data-msg="Please enter expiry month." data-error-class="u-has-error"
+                              data-success-class="u-has-success" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col">
+                      <button type="submit"
+                        class="btn btn-primary w-100 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3">
+                        CONFIRM BOOKING
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                <!-- End Payment Form -->
+              </div>
+
+              <div class="tab-pane fade show pt-8" id="paymenttwo" role="tabpanel" aria-labelledby="paymenttwo-tab">
+                <form class="js-validate">
+                  <!-- Login -->
+                  <div class="row">
+                    <!-- Input -->
+                    <div class="col-sm-6 mb-4">
+                      <div class="js-form-message">
+                        <label class="form-label"> Card Holder Name </label>
+
+                        <input type="text" class="form-control" name="Cardname" placeholder="" aria-label="" required
+                          data-msg="Please enter card holder name." data-error-class="u-has-error"
+                          data-success-class="u-has-success" />
+                      </div>
+                    </div>
+                    <!-- End Input -->
+
+                    <!-- Input -->
+                    <div class="col-sm-6 mb-4">
+                      <div class="js-form-message">
+                        <label class="form-label"> Card Number </label>
+
+                        <input type="number" class="form-control" name="Cardnumber" placeholder="" aria-label=""
+                          required data-msg="Please enter card number." data-error-class="u-has-error"
+                          data-success-class="u-has-success" />
+                      </div>
+                    </div>
+                    <!-- End Input -->
+
+                    <div class="w-100"></div>
+
+                    <!-- Input -->
+                    <div class="col-sm-6 mb-4">
+                      <div class="row">
+                        <div class="col-sm-6 mb-4 mb-md-0">
+                          <div class="js-form-message">
+                            <label class="form-label"> Expiry Month </label>
+
+                            <input type="number" class="form-control" name="Expirymonth" placeholder="" aria-label=""
+                              required data-msg="Please enter expiry month." data-error-class="u-has-error"
+                              data-success-class="u-has-success" />
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="js-form-message">
+                            <label class="form-label"> Expiry Year </label>
+
+                            <input type="number" class="form-control" name="Expiryyear" placeholder="" aria-label=""
+                              required data-msg="Please enter expiry year." data-error-class="u-has-error"
+                              data-success-class="u-has-success" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Input -->
+
+                    <!-- Input -->
+                    <div class="col-sm-6 mb-4">
+                      <div class="js-form-message">
+                        <label class="form-label"> CCV </label>
+
+                        <input type="number" class="form-control" name="ccvnumber" placeholder="" aria-label="" required
+                          data-msg="Please enter ccv number." data-error-class="u-has-error"
+                          data-success-class="u-has-success" />
+                      </div>
+                    </div>
+                    <!-- End Input -->
+
+                    <div class="w-100"></div>
+
+                    <div class="col">
+                      <button type="submit"
+                        class="btn btn-primary w-100 rounded-sm transition-3d-hover font-size-16 font-weight-bold py-3">
+                        CONFIRM BOOKING
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- End Tab Content -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Payment information End-->
+
+    <!-- Booking confirmation page start -->
+    <div class="mb-5 shadow-soft bg-white rounded-sm">
+      <div class="py-6 px-5 border-bottom">
+        <div class="flex-horizontal-center">
+          <div class="height-50 width-50 flex-shrink-0 flex-content-center">
+            <i class="fa-solid fa-circle-check font-size-24 text-primary"></i>
+          </div>
+          <div class="ml-3">
+            <h3 class="font-size-18 font-weight-bold text-dark mb-0 text-lh-sm">
+              Thank You. Your Booking is Confirmed Now.
+            </h3>
+          </div>
+        </div>
+      </div>
+      <div class="pt-4 pb-5 px-5 border-bottom">
+        <h5 id="scroll-description" class="font-size-21 font-weight-bold text-dark mb-2">
+          Traveler Information
+        </h5>
+        <!-- Fact List -->
+        <ul class="list-unstyled font-size-1 mb-0 font-size-16">
+          <li class="d-flex justify-content-between py-2">
+            <span class="font-weight-medium">Booking number</span>
+            <span class="text-secondary text-right">5784-BD245</span>
+          </li>
+
+          <li class="d-flex justify-content-between py-2">
+            <span class="font-weight-medium">First name</span>
+            <span class="text-secondary text-right">Jessica</span>
+          </li>
+
+          <li class="d-flex justify-content-between py-2">
+            <span class="font-weight-medium">Last name</span>
+            <span class="text-secondary text-right">Brown</span>
+          </li>
+
+          <li class="d-flex justify-content-between py-2">
+            <span class="font-weight-medium">E-mail address</span>
+            <span class="text-secondary text-right">Info@Jessica.com</span>
+          </li>
+
+          <li class="d-flex justify-content-between py-2">
+            <span class="font-weight-medium">Street Address and number</span>
+            <span class="text-secondary text-right">353 Third floor Avenue</span>
+          </li>
+
+          <li class="d-flex justify-content-between py-2">
+            <span class="font-weight-medium">Town / City</span>
+            <span class="text-secondary text-right">Paris,France</span>
+          </li>
+
+          <li class="d-flex justify-content-between py-2">
+            <span class="font-weight-medium">ZIP code</span>
+            <span class="text-secondary text-right">75800-875</span>
+          </li>
+
+          <li class="d-flex justify-content-between py-2">
+            <span class="font-weight-medium">Country</span>
+            <span class="text-secondary text-right">United States of america</span>
+          </li>
+        </ul>
+        <!-- End Fact List -->
+      </div>
+      <div class="pt-4 pb-5 px-5 border-bottom">
+        <a href="" class="text-underline text-primary">Payment Confirmation PDF Download.</a>
+      </div>
+    </div>
+    <!-- Booking confirmation page End -->
   </div>
-  <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12">
-    <div class="card mt-4 ">
+  {% for group in itineraries %}
+  {% for itinerary in group %}
+  <div class="col-lg-3 col-xl-3 col-md-12 col-sm-12">
+    <div class="card mt-4">
       <div class="card-body">
         <h4 class="card-title fw-bold">Price Break Down</h4>
         <h5 class="text-primary">Adult x1</h5>
         <div class="border-bottom border-primary">
           <div class="d-flex justify-content-between">
             <p class="text-black">Base</p>
-            <p class="text-black">$25,032</p>
+            <p class="text-black">{{
+              itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['passengerTotalFare']['equivalentCurrency'] }} {{
+              itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['passengerTotalFare']['equivalentAmount'] }}</p>
           </div>
           <div class="d-flex justify-content-between">
             <p class="text-black">Taxes</p>
-            <p class="text-black">$9,158</p>
+            <p class="text-black">{{
+              itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['passengerTotalFare']['currency'] }} {{
+              itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['passengerTotalFare']['totalTaxAmount'] }}</p>
           </div>
           <div class="d-flex justify-content-between">
             <p class="text-black">Service Fee</p>
             <p class="text-black">$0</p>
           </div>
         </div>
-        <div class="border-bottom border-primary mt-2">
+        <div class="border-primary mt-2">
           <div class="d-flex justify-content-between">
-            <p class="text-black">Total PAX</p>
+            <p class="text-black">Total Fare</p>
             <p class="text-black">
               1 <i class="bi bi-person-standing text-primary"></i>
             </p>
           </div>
           <div class="d-flex justify-content-between">
-            <p class="text-black">Total Base Fare</p>
-            <p class="text-black">$25,032</p>
-          </div>
-          <div class="d-flex justify-content-between">
-            <p class="text-black">Total TAX</p>
-            <p class="text-black">$9,158</p>
-          </div>
-          <div class="d-flex justify-content-between">
-            <p class="text-black">Agent Total</p>
-            <p class="text-black">$32,540</p>
-          </div>
-          <div class="d-flex justify-content-between">
             <p class="text-black">Customer Total</p>
-            <p class="text-black">$34,190</p>
+            <p class="text-black">{{
+              itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['passengerTotalFare']['currency'] }} {{
+              itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['passengerTotalFare']['totalFare'] }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-body">
+        <h4 class="card-title fw-bold">Penalties</h4>
+        <div class="border-primary">
+          <div class="d-flex justify-content-between">
+            <p class="text-black">Exchange</p>
+            <p class="text-black">+ {{
+              itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['penaltiesInfo']['penalties'][0]['currency'] }} {{
+              itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['penaltiesInfo']['penalties'][0]['amount'] }}</p>
           </div>
           <div class="d-flex justify-content-between">
-            <p class="text-black">Discount</p>
-            <p class="text-black">$1,650</p>
+            <p class="text-black">Refund</p>
+            <p class="text-black">- {{
+              itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['penaltiesInfo']['penalties'][2]['currency'] }} {{
+              itinerary['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['penaltiesInfo']['penalties'][2]['amount'] }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  {% endfor %}
+  {% endfor %}
 </div>
 
-  
+</div>
+
+
 
 {% endblock %}
